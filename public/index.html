@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SINWRLDD // 67</title>
+    <title>SINWRLDD</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&display=swap');
 
         :root {
             --bg: #000000;
             --card-bg: #000000;
-            --accent-red: #ff0000;
+            --accent: #ffcc00; 
+            --accent-secondary: #00f2ff;
             --verify-blue: #0095f6;
             --text-main: #ffffff;
         }
@@ -23,6 +24,7 @@
             user-select: none;
             -webkit-user-select: none;
             -webkit-touch-callout: none;
+            -webkit-user-drag: none;
         }
 
         body {
@@ -91,20 +93,22 @@
             transform: scale(1.1);
         }
 
-        .red-line {
-            height: 1px;
+        .accent-line {
+            height: 2px;
             width: 100%;
-            background: var(--accent-red);
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent-secondary), transparent);
             position: absolute;
             bottom: 0;
             z-index: 5;
-            box-shadow: 0 0 15px var(--accent-red);
-            animation: linePulse 2s infinite ease-in-out;
+            box-shadow: 0 0 15px var(--accent);
+            animation: lineFlow 3s infinite linear;
+            background-size: 200% 100%;
         }
 
-        @keyframes linePulse {
-            0%, 100% { opacity: 0.4; transform: scaleX(1); }
-            50% { opacity: 1; transform: scaleX(1.05); }
+        @keyframes lineFlow {
+            0% { background-position: 100% 0%; opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { background-position: -100% 0%; opacity: 0.5; }
         }
 
         .avatar-wrapper {
@@ -136,8 +140,8 @@
         }
 
         .profile-card:hover .avatar {
-            border-color: var(--accent-red);
-            transform: scale(1.05);
+            border-color: var(--accent);
+            transform: scale(1.05) rotate(5deg);
         }
 
         .content {
@@ -147,8 +151,8 @@
 
         .username {
             font-family: 'Syncopate', sans-serif;
-            font-size: 26px;
-            letter-spacing: -2px;
+            font-size: 24px;
+            letter-spacing: -1px;
             color: var(--text-main);
             display: flex;
             justify-content: center;
@@ -159,18 +163,14 @@
         }
 
         .username span {
-            color: var(--accent-red);
-            text-shadow: 0 0 10px rgba(255,0,0,0.5);
-            animation: glitchText 3s infinite;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(255,204,0,0.4);
+            animation: glowPulse 2s infinite alternate;
         }
 
-        @keyframes glitchText {
-            0%, 100% { transform: none; opacity: 1; }
-            7% { transform: skew(-0.5deg, -0.9deg); opacity: 0.75; }
-            10% { transform: none; opacity: 1; }
-            27% { transform: none; opacity: 1; }
-            30% { transform: skew(0.8deg, -0.1deg); opacity: 0.75; }
-            35% { transform: none; opacity: 1; }
+        @keyframes glowPulse {
+            from { opacity: 0.8; text-shadow: 0 0 5px var(--accent); }
+            to { opacity: 1; text-shadow: 0 0 20px var(--accent); }
         }
 
         .verified-badge {
@@ -193,7 +193,7 @@
         .sub-text {
             font-family: 'Space Mono', monospace;
             font-size: 10px;
-            color: #444;
+            color: #555;
             letter-spacing: 6px;
             text-transform: uppercase;
             margin-top: 20px;
@@ -211,33 +211,32 @@
             font-family: 'Space Mono', monospace;
             font-size: 11px;
             color: #fff;
-            padding: 10px 25px;
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 30px;
+            border: 1px solid rgba(255,255,255,0.05);
             background: rgba(255,255,255,0.02);
-            letter-spacing: 3px;
-            transition: 0.3s;
+            letter-spacing: 4px;
+            transition: 0.4s;
             position: relative;
-            overflow: hidden;
         }
 
         .fb-btn:hover {
-            border-color: var(--accent-red);
-            color: var(--accent-red);
-            background: rgba(255,0,0,0.05);
-            box-shadow: 0 0 20px rgba(255,0,0,0.1);
+            border-color: var(--accent-secondary);
+            color: var(--accent-secondary);
+            background: rgba(0, 242, 255, 0.05);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+            transform: translateY(-2px);
         }
 
         .accent-divider {
-            width: 30px;
+            width: 40px;
             height: 1px;
-            background: var(--accent-red);
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
             margin: 30px auto;
-            box-shadow: 0 0 10px var(--accent-red);
-            opacity: 0.5;
+            opacity: 0.6;
         }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
 
     <div id="cursor"></div>
 
@@ -250,7 +249,7 @@
         
         <div class="banner-container">
             <img src="https://i.gifer.com/VhAL.gif" alt="cover">
-            <div class="red-line"></div>
+            <div class="accent-line"></div>
         </div>
 
         <div class="avatar-wrapper">
@@ -295,14 +294,21 @@
         document.addEventListener('click', initAudio);
         document.addEventListener('touchstart', initAudio);
 
-        document.addEventListener('mousedown', () => cursor.style.transform = 'scale(2)');
+        document.addEventListener('mousedown', () => cursor.style.transform = 'scale(2.5)');
         document.addEventListener('mouseup', () => cursor.style.transform = 'scale(1)');
 
-        window.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 73)) {
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 'i' || e.key === 's' || e.key === 'j')) {
                 e.preventDefault();
             }
-        }, false);
+            if (e.key === 'F12') {
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('wheel', (e) => {
+            if (e.ctrlKey) e.preventDefault();
+        }, { passive: false });
     </script>
 </body>
 </html>
