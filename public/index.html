@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SINWRLDD // 67</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap');
@@ -12,6 +12,7 @@
             --card-bg: #000000;
             --accent-red: #ff0000;
             --verify-blue: #0095f6;
+            --text-main: #ffffff;
         }
 
         * {
@@ -19,6 +20,9 @@
             padding: 0;
             box-sizing: border-box;
             cursor: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
         }
 
         body {
@@ -29,7 +33,7 @@
             align-items: flex-start;
             font-family: 'Syncopate', sans-serif;
             overflow: hidden;
-            background: radial-gradient(circle at center, #050505 0%, #000 100%);
+            touch-action: none;
         }
 
         #cursor {
@@ -53,6 +57,8 @@
             min-height: 100vh;
             border-left: 1px solid rgba(255,255,255,0.03);
             border-right: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            flex-direction: column;
         }
 
         .scanlines {
@@ -66,7 +72,7 @@
 
         .banner-container {
             width: 100%;
-            height: 150px; 
+            height: 160px; 
             position: relative;
             overflow: hidden;
             background: #050505;
@@ -77,7 +83,7 @@
             height: 100%;
             object-fit: cover;
             filter: grayscale(100%) brightness(0.3);
-            transition: 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+            transition: 1.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
         .profile-card:hover .banner-container img {
@@ -97,32 +103,27 @@
         }
 
         @keyframes linePulse {
-            0%, 100% { opacity: 0.4; box-shadow: 0 0 5px var(--accent-red); }
-            50% { opacity: 1; box-shadow: 0 0 20px var(--accent-red); }
+            0%, 100% { opacity: 0.4; transform: scaleX(1); }
+            50% { opacity: 1; transform: scaleX(1.05); }
         }
 
         .avatar-wrapper {
             display: flex;
             justify-content: center;
-            margin-top: -55px;
+            margin-top: -60px;
             position: relative;
             z-index: 10;
         }
 
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 125px;
+            height: 125px;
             border-radius: 50%;
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 3px;
+            padding: 4px;
             background: #000;
-            box-shadow: 0 10px 50px rgba(0,0,0,1);
-            transition: 0.4s ease;
-        }
-
-        .avatar:hover {
-            border-color: var(--accent-red);
-            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,1);
+            transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
         .avatar img {
@@ -130,7 +131,13 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            filter: grayscale(100%) contrast(1.1);
+            filter: grayscale(100%);
+            pointer-events: none;
+        }
+
+        .profile-card:hover .avatar {
+            border-color: var(--accent-red);
+            transform: scale(1.05);
         }
 
         .content {
@@ -140,25 +147,30 @@
 
         .username {
             font-family: 'Syncopate', sans-serif;
-            font-size: 24px;
-            letter-spacing: -1px;
-            color: #fff;
+            font-size: 26px;
+            letter-spacing: -2px;
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             text-transform: uppercase;
         }
 
         .username span {
             color: var(--accent-red);
-            animation: textGlow 1.5s ease-in-out infinite alternate;
+            text-shadow: 0 0 10px rgba(255,0,0,0.5);
+            animation: glitchText 3s infinite;
         }
 
-        @keyframes textGlow {
-            from { text-shadow: 0 0 2px rgba(255,0,0,0.2); }
-            to { text-shadow: 0 0 15px rgba(255,0,0,0.9); }
+        @keyframes glitchText {
+            0%, 100% { transform: none; opacity: 1; }
+            7% { transform: skew(-0.5deg, -0.9deg); opacity: 0.75; }
+            10% { transform: none; opacity: 1; }
+            27% { transform: none; opacity: 1; }
+            30% { transform: skew(0.8deg, -0.1deg); opacity: 0.75; }
+            35% { transform: none; opacity: 1; }
         }
 
         .verified-badge {
@@ -169,7 +181,7 @@
             height: 18px;
             background-color: var(--verify-blue);
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(0, 149, 246, 0.3);
+            box-shadow: 0 0 15px rgba(0, 149, 246, 0.4);
         }
 
         .verified-badge svg {
@@ -185,25 +197,47 @@
             letter-spacing: 6px;
             text-transform: uppercase;
             margin-top: 20px;
-            transition: 0.3s;
+            font-weight: 700;
         }
 
-        .profile-card:hover .sub-text {
-            color: #777;
-            letter-spacing: 8px;
+        .social-links {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .fb-btn {
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: #fff;
+            padding: 10px 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.02);
+            letter-spacing: 3px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fb-btn:hover {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+            background: rgba(255,0,0,0.05);
+            box-shadow: 0 0 20px rgba(255,0,0,0.1);
         }
 
         .accent-divider {
-            width: 40px;
+            width: 30px;
             height: 1px;
             background: var(--accent-red);
             margin: 30px auto;
             box-shadow: 0 0 10px var(--accent-red);
-            opacity: 0.6;
+            opacity: 0.5;
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
     <div id="cursor"></div>
 
@@ -227,7 +261,7 @@
 
         <div class="content">
             <div class="username">
-                SIN <span>WRLDD</span>
+                SINWRLDD</span>
                 <div class="verified-badge">
                     <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                 </div>
@@ -236,6 +270,10 @@
             <div class="sub-text">ASTA LA VISTA • 67</div>
             
             <div class="accent-divider"></div>
+
+            <div class="social-links">
+                <a href="https://www.facebook.com/61579551575273" class="fb-btn" target="_blank">FACEBOOK</a>
+            </div>
         </div>
     </div>
 
@@ -249,10 +287,9 @@
         });
 
         function initAudio() {
-            audio.play().then(() => {
-                document.removeEventListener('click', initAudio);
-                document.removeEventListener('touchstart', initAudio);
-            }).catch(e => console.log(e));
+            audio.play().catch(e => {});
+            document.removeEventListener('click', initAudio);
+            document.removeEventListener('touchstart', initAudio);
         }
 
         document.addEventListener('click', initAudio);
@@ -260,6 +297,12 @@
 
         document.addEventListener('mousedown', () => cursor.style.transform = 'scale(2)');
         document.addEventListener('mouseup', () => cursor.style.transform = 'scale(1)');
+
+        window.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 73)) {
+                e.preventDefault();
+            }
+        }, false);
     </script>
 </body>
 </html>
