@@ -212,13 +212,27 @@
     </div>
     <script>
         (function(){
-            const _0x1a2b=["\x63\x6C\x69\x63\x6B","\x70\x6C\x61\x79","\x62\x67\x4D\x75\x73\x69\x63","\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x42\x79\x49\x64","\x6B\x65\x79\x64\x6F\x77\x6E","\x70\x72\x65\x76\x65\x6E\x74\x42\x65\x66\x61\x75\x6C\x74","\x46\x31\x32","\x64\x69\x73\x70\x6C\x61\x79","\x73\x74\x79\x6C\x65","\x73\x65\x63\x75\x72\x69\x74\x79\x2D\x61\x6C\x65\x72\x74"];
-            const a=document[_0x1a2b[3]](_0x1a2b[2]);
-            const s=document[_0x1a2b[3]](_0x1a2b[9]);
-            window.showAlert=function(){s[_0x1a2b[8]][_0x1a2b[7]]="\x66\x6C\x65\x78";setTimeout(()=>{s[_0x1a2b[8]][_0x1a2b[7]]="\x6E\x6F\x6E\x65"},2000)};
-            document.addEventListener(_0x1a2b[0],()=>a[_0x1a2b[1]]().catch(()=>{}));
-            document.addEventListener(_0x1a2b[4],(e)=>{if(e.ctrlKey||e.key===_0x1a2b[6]){e.preventDefault();showAlert()}});
-            setInterval(()=>{const start=performance.now();debugger;if(performance.now()-start>100)document.body.innerHTML=""},100);
+            const _0x4f2a = ["\x63\x6C\x69\x63\x6B", "\x70\x6C\x61\x79", "\x62\x67\x4D\x75\x73\x69\x63", "\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x42\x79\x49\x64", "\x6B\x65\x79\x64\x6F\x77\x6E", "\x70\x72\x65\x76\x65\x6E\x74\x44\x65\x66\x61\x75\x6C\x74", "\x46\x31\x32", "\x64\x69\x73\x70\x6C\x61\x79", "\x73\x74\x79\x6C\x65", "\x73\x65\x63\x75\x72\x69\x74\x79\x2D\x61\x6C\x65\x72\x74"];
+            const a = document[_0x4f2a[3]](_0x4f2a[2]);
+            const s = document[_0x4f2a[3]](_0x4f2a[9]);
+            window.showAlert = function(){
+                s[_0x4f2a[8]][_0x4f2a[7]] = "\x66\x6C\x65\x78";
+                setTimeout(() => { s[_0x4f2a[8]][_0x4f2a[7]] = "\x6E\x6F\x6E\x65" }, 2000);
+            };
+            document.addEventListener(_0x4f2a[0], () => a[_0x4f2a[1]]().catch(() => {}));
+            document.addEventListener(_0x4f2a[4], (e) => {
+                if (e.ctrlKey || e.key === _0x4f2a[6]) {
+                    e[_0x4f2a[5]]();
+                    showAlert();
+                }
+            });
+            setInterval(() => {
+                const start = performance.now();
+                debugger;
+                if (performance.now() - start > 100) {
+                    document.body.innerHTML = "";
+                }
+            }, 100);
         })();
     </script>
 </body>
