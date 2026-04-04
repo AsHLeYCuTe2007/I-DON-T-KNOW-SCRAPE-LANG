@@ -6,13 +6,14 @@
     <title>SINWRLDD</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&display=swap');
+
         :root {
             --bg: #000;
             --accent: #ffcc00; 
             --accent-secondary: #00f2ff;
             --verify-blue: #0095f6;
-            --text-white: #ffffff;
         }
+
         * {
             margin: 0;
             padding: 0;
@@ -23,6 +24,7 @@
             -webkit-user-drag: none;
             outline: none;
         }
+
         body {
             background-color: var(--bg);
             height: 100vh;
@@ -33,6 +35,7 @@
             overflow: hidden;
             touch-action: none;
         }
+
         #security-alert {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -45,6 +48,7 @@
             text-align: center;
             border: 4px solid var(--accent);
         }
+
         #security-alert h1 {
             color: var(--accent);
             font-size: 24px;
@@ -52,6 +56,15 @@
             text-shadow: 0 0 20px var(--accent);
             margin-bottom: 15px;
         }
+
+        #security-alert p {
+            color: #fff;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            opacity: 0.8;
+        }
+
         .profile-card {
             width: 100%;
             max-width: 480px;
@@ -63,6 +76,7 @@
             display: flex;
             flex-direction: column;
         }
+
         .scanlines {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -71,18 +85,22 @@
             z-index: 20;
             pointer-events: none;
         }
+
         .banner-container {
             width: 100%;
             height: 160px; 
             position: relative;
             overflow: hidden;
         }
+
         .banner-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             filter: grayscale(100%) brightness(0.3);
+            transition: 1.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
+
         .accent-line {
             height: 2px;
             width: 100%;
@@ -94,10 +112,12 @@
             animation: lineFlow 3s infinite linear;
             background-size: 200% 100%;
         }
+
         @keyframes lineFlow {
             0% { background-position: 100% 0%; }
             100% { background-position: -100% 0%; }
         }
+
         .avatar-wrapper {
             display: flex;
             justify-content: center;
@@ -105,6 +125,7 @@
             position: relative;
             z-index: 10;
         }
+
         .avatar {
             width: 125px;
             height: 125px;
@@ -114,6 +135,7 @@
             background: #000;
             box-shadow: 0 15px 50px rgba(0,0,0,1);
         }
+
         .avatar img {
             width: 100%;
             height: 100%;
@@ -121,24 +143,28 @@
             object-fit: cover;
             filter: grayscale(100%);
         }
+
         .content {
             padding: 40px 20px;
             text-align: center;
         }
+
         .username {
             font-size: 24px;
             letter-spacing: -1px;
-            color: var(--text-white);
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 12px;
             text-transform: uppercase;
         }
+
         .username span {
             color: var(--accent);
             text-shadow: 0 0 10px rgba(255,204,0,0.4);
         }
+
         .verified-badge {
             display: flex;
             align-items: center;
@@ -148,11 +174,13 @@
             background-color: var(--verify-blue);
             border-radius: 50%;
         }
+
         .verified-badge svg {
             width: 11px;
             height: 11px;
             fill: white;
         }
+
         .sub-text {
             font-family: 'Space Mono', monospace;
             font-size: 10px;
@@ -161,25 +189,29 @@
             text-transform: uppercase;
             margin-top: 20px;
         }
+
         .social-links {
             margin-top: 40px;
         }
+
         .fb-btn {
             text-decoration: none;
             font-family: 'Space Mono', monospace;
             font-size: 11px;
-            color: var(--text-white);
+            color: #fff;
             padding: 12px 30px;
             border: 1px solid rgba(255,255,255,0.05);
             background: rgba(255,255,255,0.02);
             letter-spacing: 4px;
             transition: 0.4s;
         }
+
         .fb-btn:hover {
             border-color: var(--accent-secondary);
             color: var(--accent-secondary);
             box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
         }
+
         .accent-divider {
             width: 40px;
             height: 1px;
@@ -189,11 +221,16 @@
     </style>
 </head>
 <body oncontextmenu="showAlert(); return false;">
+
     <div id="security-alert">
         <h1>ACCESS DENIED</h1>
-        <p style="color:#fff; font-family:'Space Mono'; font-size:10px;">SOURCE PROTECTION ENABLED // SINWRLDD</p>
+        <p>ENCRYPTED SOURCE PROTECTION // SINWRLDD</p>
     </div>
-    <audio id="bgMusic" loop><source src="kurapika.mp3" type="audio/mpeg"></audio>
+
+    <audio id="bgMusic" loop>
+        <source src="kurapika.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="profile-card">
         <div class="scanlines"></div>
         <div class="banner-container">
@@ -201,11 +238,15 @@
             <div class="accent-line"></div>
         </div>
         <div class="avatar-wrapper">
-            <div class="avatar"><img src="https://i.gifer.com/8pav.gif"></div>
+            <div class="avatar">
+                <img src="https://i.gifer.com/8pav.gif">
+            </div>
         </div>
         <div class="content">
             <div class="username">SINWRLDD</span>
-                <div class="verified-badge"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                <div class="verified-badge">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
             </div>
             <div class="sub-text">ASTA LA VISTA • 67</div>
             <div class="accent-divider"></div>
@@ -214,15 +255,33 @@
             </div>
         </div>
     </div>
+
     <script>
-        (function(){
-            const _0x1a2b=["\x63\x6C\x69\x63\x6B","\x70\x6C\x61\x79","\x62\x67\x4D\x75\x73\x69\x63","\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x42\x79\x49\x64","\x6B\x65\x79\x64\x6F\x77\x6E","\x70\x72\x65\x76\x65\x6E\x74\x44\x65\x66\x61\x75\x6C\x74","\x46\x31\x32","\x64\x69\x73\x70\x6C\x61\x79","\x73\x74\x79\x6C\x65","\x73\x65\x63\x75\x72\x69\x74\x79\x2D\x61\x6C\x65\x72\x74"];
-            const a=document[_0x1a2b[3]](_0x1a2b[2]);
-            const s=document[_0x1a2b[3]](_0x1a2b[9]);
-            window.showAlert=function(){s[_0x1a2b[8]][_0x1a2b[7]]="\x66\x6C\x65\x78";setTimeout(()=>{s[_0x1a2b[8]][_0x1a2b[7]]="\x6E\x6F\x6E\x65"},2000)};
-            document.addEventListener(_0x1a2b[0],()=>a[_0x1a2b[1]]().catch(()=>{}));
-            document.addEventListener(_0x1a2b[4],(e)=>{if(e.ctrlKey||e.key===_0x1a2b[6]){e[_0x1a2b[5]]();showAlert()}});
-            setInterval(()=>{const start=performance.now();debugger;if(performance.now()-start>100)document.body.innerHTML=""},100);
+        (function() {
+            const a = document.getElementById("bgMusic");
+            const s = document.getElementById("security-alert");
+
+            window.showAlert = function() {
+                s.style.display = "flex";
+                setTimeout(() => { s.style.display = "none"; }, 2000);
+            };
+
+            document.addEventListener('click', () => a.play().catch(()=>{}));
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && ['u','s','i','j','c'].includes(e.key.toLowerCase()) || e.key === 'F12') {
+                    e.preventDefault();
+                    showAlert();
+                }
+            });
+
+            document.addEventListener('wheel', (e) => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+
+            setInterval(() => {
+                const start = performance.now();
+                debugger;
+                if (performance.now() - start > 100) document.body.innerHTML = "";
+            }, 100);
         })();
     </script>
 </body>
