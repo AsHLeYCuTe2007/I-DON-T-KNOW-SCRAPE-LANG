@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SINWRLDD // 67</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap');
 
         :root {
             --bg: #050505;
-            --card: #0d0d0d;
-            --accent: #ffffff;
-            --border: rgba(255, 255, 255, 0.08);
-            --glitch-1: #ff003c;
-            --glitch-2: #00f2ff;
+            --card-bg: #0a0a0a;
+            --accent-red: #ff0000;
+            --accent-gold: #ffcc00;
+            --text-gray: #888;
+            --border-rgba: rgba(255, 255, 255, 0.05);
         }
 
         * {
@@ -29,51 +29,63 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #151515 0%, #000 100%);
+            font-family: 'Space Mono', monospace;
+            background-image: 
+                radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
         }
 
-        .container {
-            width: 400px;
-            background: var(--card);
-            border: 1px solid var(--border);
+        .profile-card {
+            width: 380px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-rgba);
             position: relative;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), border 0.3s ease;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            border-radius: 4px;
             overflow: hidden;
+            transition: 0.4s ease;
         }
 
-        .container:hover {
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transform: translateY(-10px) scale(1.02);
+        .profile-card:hover {
+            border-color: rgba(255, 0, 0, 0.3);
+            transform: translateY(-5px);
         }
 
-        .banner {
+        .banner-container {
             width: 100%;
-            height: 160px;
-            overflow: hidden;
+            height: 140px;
             position: relative;
+            background: #111;
+            overflow: hidden;
         }
 
-        .banner img {
+        .banner-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(100%) brightness(40%);
-            transition: 1.5s ease;
+            filter: grayscale(100%) contrast(120%) brightness(0.6);
+            transition: 0.8s ease;
         }
 
-        .container:hover .banner img {
-            filter: grayscale(30%) brightness(60%);
-            transform: scale(1.1);
+        .profile-card:hover .banner-container img {
+            filter: grayscale(0%) brightness(0.7);
+            transform: scale(1.05);
         }
 
-        .profile-section {
-            position: relative;
+        .red-line {
+            height: 2px;
+            width: 100%;
+            background: var(--accent-red);
+            position: absolute;
+            bottom: 0;
+            z-index: 5;
+            box-shadow: 0 0 15px var(--accent-red);
+        }
+
+        .avatar-wrapper {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: -60px;
+            justify-content: center;
+            margin-top: -55px;
+            position: relative;
             z-index: 10;
         }
 
@@ -81,82 +93,83 @@
             width: 110px;
             height: 110px;
             border-radius: 50%;
-            border: 4px solid var(--card);
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            background: #000;
-            transition: 0.5s ease;
-        }
-
-        .container:hover .avatar {
-            border-color: rgba(255,255,255,0.1);
-            transform: rotate(5deg);
+            border: 3px solid var(--accent-gold);
+            padding: 3px;
+            background: var(--card-bg);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
         .avatar img {
             width: 100%;
             height: 100%;
+            border-radius: 50%;
             object-fit: cover;
         }
 
-        .info {
-            padding: 20px 30px 40px;
+        .content {
+            padding: 25px 20px 40px;
             text-align: center;
         }
 
-        h1 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 28px;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            color: var(--accent);
-            margin-top: 15px;
-            position: relative;
-            display: inline-block;
+        .username {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 42px;
+            letter-spacing: 2px;
+            color: var(--accent-gold);
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
 
-        .asta-text {
-            display: block;
-            font-family: 'Space Mono', monospace;
+        .username span {
+            color: var(--accent-red);
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .badge {
+            width: 18px;
+            height: 18px;
+            background: #3498db;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             font-size: 10px;
-            color: #555;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            transition: 0.4s ease;
+            color: white;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.6);
         }
 
-        .container:hover .asta-text {
-            color: #aaa;
-            letter-spacing: 8px;
+        .sub-text {
+            font-size: 9px;
+            color: var(--text-gray);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            font-weight: 700;
+        }
+
+        .divider {
+            width: 40px;
+            height: 1px;
+            background: var(--accent-red);
+            margin: 20px auto;
         }
 
         #cursor {
             position: fixed;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: #fff;
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             mix-blend-mode: difference;
-            transition: transform 0.1s ease;
+            box-shadow: 0 0 10px #fff;
         }
 
-        @keyframes glitch {
-            0% { text-shadow: 2px 0 var(--glitch-1), -2px 0 var(--glitch-2); }
-            25% { text-shadow: -2px 0 var(--glitch-1), 2px 0 var(--glitch-2); }
-            50% { text-shadow: 2px -1px var(--glitch-1), -2px 1px var(--glitch-2); }
-            100% { text-shadow: 0 0 var(--glitch-1), 0 0 var(--glitch-2); }
-        }
-
-        .container:hover h1 {
-            animation: glitch 0.4s skew linear infinite;
-        }
-
-        .scanline {
+        .scanlines {
             position: absolute;
             top: 0;
             left: 0;
@@ -164,13 +177,13 @@
             height: 100%;
             background: linear-gradient(
                 to bottom,
-                transparent 50%,
-                rgba(255, 255, 255, 0.02) 50%
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.1) 50%
             );
             background-size: 100% 4px;
             z-index: 20;
             pointer-events: none;
-            opacity: 0.3;
+            opacity: 0.2;
         }
     </style>
 </head>
@@ -178,33 +191,40 @@
 
     <div id="cursor"></div>
 
-    <div class="container">
-        <div class="scanline"></div>
-        <div class="banner">
+    <div class="profile-card">
+        <div class="scanlines"></div>
+        
+        <div class="banner-container">
             <img src="https://i.gifer.com/VhAL.gif" alt="cover">
+            <div class="red-line"></div>
         </div>
 
-        <div class="profile-section">
+        <div class="avatar-wrapper">
             <div class="avatar">
                 <img src="https://i.gifer.com/8pav.gif" alt="pfp">
             </div>
-            
-            <div class="info">
-                <h1>SINWRLDD</h1>
-                <div class="asta-text">ASTA LA VISTA (67)</div>
+        </div>
+
+        <div class="content">
+            <div class="username">
+                SIN<span>WRLDD</span>
+                <div class="badge">✓</div>
             </div>
+            
+            <div class="sub-text">ASTA LA VISTA • FULLSTACK</div>
+            
+            <div class="divider"></div>
+            
+            <div class="sub-text" style="color: #444; letter-spacing: 5px;">67 // GØDZ-MØDZ</div>
         </div>
     </div>
 
     <script>
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+            cursor.style.left = e.clientX - 4 + 'px';
+            cursor.style.top = e.clientY - 4 + 'px';
         });
-
-        document.addEventListener('mousedown', () => cursor.style.transform = 'scale(2)');
-        document.addEventListener('mouseup', () => cursor.style.transform = 'scale(1)');
     </script>
 </body>
 </html>
