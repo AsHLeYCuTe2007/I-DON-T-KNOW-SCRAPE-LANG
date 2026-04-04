@@ -46,7 +46,7 @@
             border: 4px solid var(--accent);
         }
         #security-alert h1 {
-            color: var(--accent);
+            color: var(--text-white);
             font-size: 24px;
             letter-spacing: 8px;
             text-shadow: 0 0 20px var(--accent);
@@ -135,10 +135,6 @@
             gap: 12px;
             text-transform: uppercase;
         }
-        .username span {
-            color: var(--accent);
-            text-shadow: 0 0 10px rgba(255,204,0,0.4);
-        }
         .verified-badge {
             display: flex;
             align-items: center;
@@ -156,7 +152,7 @@
         .sub-text {
             font-family: 'Space Mono', monospace;
             font-size: 10px;
-            color: #555;
+            color: #777;
             letter-spacing: 6px;
             text-transform: uppercase;
             margin-top: 20px;
@@ -170,28 +166,28 @@
             font-size: 11px;
             color: var(--text-white);
             padding: 12px 30px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.02);
             letter-spacing: 4px;
             transition: 0.4s;
         }
         .fb-btn:hover {
             border-color: var(--accent-secondary);
-            color: var(--accent-secondary);
             box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
         }
         .accent-divider {
             width: 40px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            background: linear-gradient(90deg, transparent, var(--text-white), transparent);
             margin: 30px auto;
+            opacity: 0.3;
         }
     </style>
 </head>
 <body oncontextmenu="showAlert(); return false;">
     <div id="security-alert">
         <h1>ACCESS DENIED</h1>
-        <p style="color:#fff; font-family:'Space Mono'; font-size:10px;">SOURCE PROTECTION ENABLED // SINWRLDD</p>
+        <p style="color:#fff; font-family:'Space Mono'; font-size:10px; opacity:0.6;">SOURCE PROTECTION ACTIVE // SINWRLDD</p>
     </div>
     <audio id="bgMusic" loop><source src="kurapika.mp3" type="audio/mpeg"></audio>
     <div class="profile-card">
@@ -204,7 +200,7 @@
             <div class="avatar"><img src="https://i.gifer.com/8pav.gif"></div>
         </div>
         <div class="content">
-            <div class="username">SIN<span>WRLDD</span>
+            <div class="username">SINWRLDD
                 <div class="verified-badge"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
             </div>
             <div class="sub-text">ASTA LA VISTA • 67</div>
@@ -216,12 +212,12 @@
     </div>
     <script>
         (function(){
-            const _0x1a2b=["\x63\x6C\x69\x63\x6B","\x70\x6C\x61\x79","\x62\x67\x4D\x75\x73\x69\x63","\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x42\x79\x49\x64","\x6B\x65\x79\x64\x6F\x77\x6E","\x70\x72\x65\x76\x65\x6E\x74\x44\x65\x66\x61\x75\x6C\x74","\x46\x31\x32","\x64\x69\x73\x70\x6C\x61\x79","\x73\x74\x79\x6C\x65","\x73\x65\x63\x75\x72\x69\x74\x79\x2D\x61\x6C\x65\x72\x74"];
+            const _0x1a2b=["\x63\x6C\x69\x63\x6B","\x70\x6C\x61\x79","\x62\x67\x4D\x75\x73\x69\x63","\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x42\x79\x49\x64","\x6B\x65\x79\x64\x6F\x77\x6E","\x70\x72\x65\x76\x65\x6E\x74\x42\x65\x66\x61\x75\x6C\x74","\x46\x31\x32","\x64\x69\x73\x70\x6C\x61\x79","\x73\x74\x79\x6C\x65","\x73\x65\x63\x75\x72\x69\x74\x79\x2D\x61\x6C\x65\x72\x74"];
             const a=document[_0x1a2b[3]](_0x1a2b[2]);
             const s=document[_0x1a2b[3]](_0x1a2b[9]);
             window.showAlert=function(){s[_0x1a2b[8]][_0x1a2b[7]]="\x66\x6C\x65\x78";setTimeout(()=>{s[_0x1a2b[8]][_0x1a2b[7]]="\x6E\x6F\x6E\x65"},2000)};
             document.addEventListener(_0x1a2b[0],()=>a[_0x1a2b[1]]().catch(()=>{}));
-            document.addEventListener(_0x1a2b[4],(e)=>{if(e.ctrlKey||e.key===_0x1a2b[6]){e[_0x1a2b[5]]();showAlert()}});
+            document.addEventListener(_0x1a2b[4],(e)=>{if(e.ctrlKey||e.key===_0x1a2b[6]){e.preventDefault();showAlert()}});
             setInterval(()=>{const start=performance.now();debugger;if(performance.now()-start>100)document.body.innerHTML=""},100);
         })();
     </script>
