@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SINWRLDD</title>
+    <title>SINWRLDD // 67</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Anton&family=Space+Mono:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap');
 
         :root {
-            --bg: #000000;
-            --card: #080808;
+            --bg: #030303;
+            --card: #0a0a0a;
             --accent: #ffffff;
-            --border: rgba(255, 255, 255, 0.15);
+            --border: rgba(255, 255, 255, 0.1);
+            --glitch-1: #ff0000;
+            --glitch-2: #00ffff;
         }
 
         * {
@@ -28,65 +30,58 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            perspective: 1000px;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
         }
 
         .container {
-            width: 450px;
+            width: 420px;
             background: var(--card);
             border: 1px solid var(--border);
             position: relative;
-            box-shadow: 0 0 150px rgba(0,0,0,1), 0 0 20px rgba(255,255,255,0.02);
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.9);
+            transition: 0.4s ease-in-out;
         }
 
         .container:hover {
-            transform: rotateY(-5deg) rotateX(2deg);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
         }
 
         .banner {
             width: 100%;
-            height: 200px;
+            height: 180px;
             overflow: hidden;
-            border-bottom: 1px solid var(--border);
+            position: relative;
         }
 
         .banner img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(100%) contrast(150%) brightness(40%);
-            transition: 1.5s ease;
+            filter: grayscale(100%) contrast(120%) brightness(50%);
+            transition: 1.2s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
         .container:hover .banner img {
-            filter: grayscale(20%) brightness(60%);
-            transform: scale(1.15);
+            filter: grayscale(0%) contrast(110%) brightness(70%);
+            transform: scale(1.1);
         }
 
         .profile-wrapper {
             position: relative;
-            padding: 0 35px;
-            margin-top: -70px;
-            display: flex;
+            padding: 0 25px;
+            margin-top: -60px;
             z-index: 10;
         }
 
         .avatar {
-            width: 130px;
-            height: 130px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            border: 8px solid var(--card);
+            border: 5px solid var(--card);
             overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             background: #000;
-            transition: 0.5s;
-        }
-
-        .container:hover .avatar {
-            border-color: rgba(255,255,255,0.1);
-            transform: scale(1.05);
         }
 
         .avatar img {
@@ -96,64 +91,76 @@
         }
 
         .info {
-            padding: 30px 35px 50px;
+            padding: 25px 25px 40px;
         }
 
         h1 {
-            font-family: 'Anton', sans-serif;
-            font-size: 60px;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 26px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            line-height: 0.8;
+            letter-spacing: -1px;
             color: var(--accent);
-            text-shadow: 2px 2px 0px rgba(255,255,255,0.1);
-            margin-bottom: 15px;
-            transition: 0.3s;
+            margin-bottom: 12px;
+            position: relative;
+            display: inline-block;
         }
 
         .asta-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
-            color: #fff;
-            letter-spacing: 5px;
+            display: block;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: #888;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            display: inline-block;
-            background: rgba(255,255,255,0.05);
-            padding: 8px 15px;
-            border: 1px solid var(--border);
-            animation: pulse 2s infinite;
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+            margin-top: 15px;
+            transition: 0.3s;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.6; box-shadow: 0 0 0px #fff; }
-            50% { opacity: 1; box-shadow: 0 0 15px rgba(255,255,255,0.1); }
-            100% { opacity: 0.6; box-shadow: 0 0 0px #fff; }
+        .container:hover .asta-text {
+            color: #fff;
+            letter-spacing: 6px;
         }
 
         #cursor {
             position: fixed;
-            width: 15px;
-            height: 15px;
+            width: 8px;
+            height: 8px;
             background: #fff;
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             mix-blend-mode: difference;
-            box-shadow: 0 0 20px #fff;
+            box-shadow: 0 0 15px #fff;
         }
 
         @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-3px, 2px); }
-            40% { transform: translate(-3px, -2px); }
-            60% { transform: translate(3px, 2px); }
-            80% { transform: translate(3px, -2px); }
-            100% { transform: translate(0); }
+            0% { text-shadow: 2px 0 var(--glitch-1), -2px 0 var(--glitch-2); }
+            25% { text-shadow: -2px 0 var(--glitch-1), 2px 0 var(--glitch-2); }
+            50% { text-shadow: 2px -1px var(--glitch-1), -2px 1px var(--glitch-2); }
+            100% { text-shadow: 0 0 var(--glitch-1), 0 0 var(--glitch-2); }
         }
 
         .container:hover h1 {
-            animation: glitch 0.2s linear infinite;
-            color: #ddd;
+            animation: glitch 0.3s linear infinite;
+        }
+
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 20;
+            pointer-events: none;
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
         }
     </style>
 </head>
@@ -162,6 +169,7 @@
     <div id="cursor"></div>
 
     <div class="container">
+        <div class="scanline"></div>
         <div class="banner">
             <img src="https://i.gifer.com/VhAL.gif" alt="cover">
         </div>
@@ -181,8 +189,8 @@
     <script>
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX - 7 + 'px';
-            cursor.style.top = e.clientY - 7 + 'px';
+            cursor.style.left = e.clientX - 4 + 'px';
+            cursor.style.top = e.clientY - 4 + 'px';
         });
     </script>
 </body>
