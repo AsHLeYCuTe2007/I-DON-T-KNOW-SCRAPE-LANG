@@ -8,12 +8,12 @@
         @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap');
 
         :root {
-            --bg: #050505;
-            --card-bg: #0a0a0a;
-            --accent-red: #ff0000;
-            --accent-gold: #ffcc00;
-            --text-gray: #888;
-            --border-rgba: rgba(255, 255, 255, 0.05);
+            --bg: #000000;
+            --card-bg: #050505;
+            --accent-red: #e60000;
+            --accent-gold: #d4af37;
+            --text-muted: #666;
+            --verify-blue: #0095f6;
         }
 
         * {
@@ -28,33 +28,24 @@
             height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             font-family: 'Space Mono', monospace;
-            background-image: 
-                radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
         }
 
         .profile-card {
-            width: 380px;
+            width: 100%;
+            max-width: 500px;
             background: var(--card-bg);
-            border: 1px solid var(--border-rgba);
             position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            border-radius: 4px;
-            overflow: hidden;
-            transition: 0.4s ease;
-        }
-
-        .profile-card:hover {
-            border-color: rgba(255, 0, 0, 0.3);
-            transform: translateY(-5px);
+            min-height: 100vh;
+            border-left: 1px solid rgba(255,255,255,0.05);
+            border-right: 1px solid rgba(255,255,255,0.05);
         }
 
         .banner-container {
             width: 100%;
-            height: 140px;
+            height: 220px;
             position: relative;
-            background: #111;
             overflow: hidden;
         }
 
@@ -62,13 +53,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(100%) contrast(120%) brightness(0.6);
-            transition: 0.8s ease;
-        }
-
-        .profile-card:hover .banner-container img {
-            filter: grayscale(0%) brightness(0.7);
-            transform: scale(1.05);
+            filter: grayscale(100%) brightness(0.7);
         }
 
         .red-line {
@@ -78,25 +63,25 @@
             position: absolute;
             bottom: 0;
             z-index: 5;
-            box-shadow: 0 0 15px var(--accent-red);
+            box-shadow: 0 0 12px var(--accent-red);
         }
 
         .avatar-wrapper {
             display: flex;
             justify-content: center;
-            margin-top: -55px;
+            margin-top: -65px;
             position: relative;
             z-index: 10;
         }
 
         .avatar {
-            width: 110px;
-            height: 110px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
-            border: 3px solid var(--accent-gold);
-            padding: 3px;
+            border: 2px solid var(--accent-gold);
+            padding: 4px;
             background: var(--card-bg);
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
         .avatar img {
@@ -104,57 +89,70 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
+            filter: grayscale(20%);
         }
 
         .content {
-            padding: 25px 20px 40px;
+            padding: 30px 20px;
             text-align: center;
         }
 
         .username {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 42px;
-            letter-spacing: 2px;
+            font-size: 34px;
+            letter-spacing: 1.5px;
             color: var(--accent-gold);
-            margin-bottom: 5px;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
+            margin-bottom: 5px;
         }
 
         .username span {
             color: var(--accent-red);
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         }
 
-        .badge {
-            width: 18px;
-            height: 18px;
-            background: #3498db;
-            border-radius: 50%;
-            display: inline-flex;
+        .verified-badge {
+            display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
-            color: white;
-            box-shadow: 0 0 10px rgba(52, 152, 219, 0.6);
+            width: 20px;
+            height: 20px;
+            background-color: var(--verify-blue);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0, 149, 246, 0.4);
+        }
+
+        .verified-badge svg {
+            width: 12px;
+            height: 12px;
+            fill: white;
         }
 
         .sub-text {
-            font-size: 9px;
-            color: var(--text-gray);
+            font-size: 10px;
+            color: var(--text-muted);
             letter-spacing: 3px;
             text-transform: uppercase;
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: 700;
         }
 
-        .divider {
-            width: 40px;
-            height: 1px;
+        .accent-divider {
+            width: 35px;
+            height: 2px;
             background: var(--accent-red);
-            margin: 20px auto;
+            margin: 25px auto;
+            box-shadow: 0 0 10px var(--accent-red);
+        }
+
+        .footer-text {
+            font-size: 9px;
+            color: #444;
+            letter-spacing: 6px;
+            font-weight: bold;
         }
 
         #cursor {
@@ -166,24 +164,6 @@
             pointer-events: none;
             z-index: 9999;
             mix-blend-mode: difference;
-            box-shadow: 0 0 10px #fff;
-        }
-
-        .scanlines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(255,255,255,0) 50%,
-                rgba(0,0,0,0.1) 50%
-            );
-            background-size: 100% 4px;
-            z-index: 20;
-            pointer-events: none;
-            opacity: 0.2;
         }
     </style>
 </head>
@@ -192,8 +172,6 @@
     <div id="cursor"></div>
 
     <div class="profile-card">
-        <div class="scanlines"></div>
-        
         <div class="banner-container">
             <img src="https://i.gifer.com/VhAL.gif" alt="cover">
             <div class="red-line"></div>
@@ -207,15 +185,17 @@
 
         <div class="content">
             <div class="username">
-                SIN<span>WRLDD</span>
-                <div class="badge">✓</div>
+                SIN <span>WRLDD</span>
+                <div class="verified-badge">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
             </div>
             
             <div class="sub-text">ASTA LA VISTA • FULLSTACK</div>
             
-            <div class="divider"></div>
+            <div class="accent-divider"></div>
             
-            <div class="sub-text" style="color: #444; letter-spacing: 5px;">67 // GØDZ-MØDZ</div>
+            <div class="footer-text">6 7 // G Ø D Z - M Ø D Z</div>
         </div>
     </div>
 
