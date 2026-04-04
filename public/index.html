@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SINWRLDD</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Anton&family=Space+Mono:wght@700&display=swap');
 
         :root {
             --bg: #000000;
-            --card: #0a0a0a;
+            --card: #080808;
             --accent: #ffffff;
-            --border: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.15);
         }
 
         * {
@@ -28,6 +28,7 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            perspective: 1000px;
         }
 
         .container {
@@ -35,45 +36,57 @@
             background: var(--card);
             border: 1px solid var(--border);
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 100px rgba(0,0,0,1);
+            box-shadow: 0 0 150px rgba(0,0,0,1), 0 0 20px rgba(255,255,255,0.02);
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .container:hover {
+            transform: rotateY(-5deg) rotateX(2deg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
 
         .banner {
             width: 100%;
-            height: 180px;
+            height: 200px;
             overflow: hidden;
+            border-bottom: 1px solid var(--border);
         }
 
         .banner img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(100%) brightness(50%);
-            transition: 1s ease;
+            filter: grayscale(100%) contrast(150%) brightness(40%);
+            transition: 1.5s ease;
         }
 
         .container:hover .banner img {
-            filter: grayscale(0%) brightness(70%);
-            transform: scale(1.1);
+            filter: grayscale(20%) brightness(60%);
+            transform: scale(1.15);
         }
 
         .profile-wrapper {
             position: relative;
-            padding: 0 30px;
-            margin-top: -60px;
+            padding: 0 35px;
+            margin-top: -70px;
             display: flex;
-            z-index: 5;
+            z-index: 10;
         }
 
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
-            border: 6px solid var(--card);
+            border: 8px solid var(--card);
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
             background: #000;
+            transition: 0.5s;
+        }
+
+        .container:hover .avatar {
+            border-color: rgba(255,255,255,0.1);
+            transform: scale(1.05);
         }
 
         .avatar img {
@@ -83,42 +96,64 @@
         }
 
         .info {
-            padding: 25px 30px 45px;
-            text-align: left;
+            padding: 30px 35px 50px;
         }
 
         h1 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 38px;
+            font-family: 'Anton', sans-serif;
+            font-size: 60px;
             text-transform: uppercase;
-            letter-spacing: -2px;
-            background: linear-gradient(90deg, #fff, #333);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+            line-height: 0.8;
+            color: var(--accent);
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.1);
+            margin-bottom: 15px;
             transition: 0.3s;
+        }
+
+        .asta-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: #fff;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            display: inline-block;
+            background: rgba(255,255,255,0.05);
+            padding: 8px 15px;
+            border: 1px solid var(--border);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; box-shadow: 0 0 0px #fff; }
+            50% { opacity: 1; box-shadow: 0 0 15px rgba(255,255,255,0.1); }
+            100% { opacity: 0.6; box-shadow: 0 0 0px #fff; }
         }
 
         #cursor {
             position: fixed;
-            width: 10px;
-            height: 10px;
+            width: 15px;
+            height: 15px;
             background: #fff;
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             mix-blend-mode: difference;
+            box-shadow: 0 0 20px #fff;
         }
 
         @keyframes glitch {
-            0% { transform: skew(0deg); }
-            20% { transform: skew(3deg); }
-            40% { transform: skew(-3deg); }
-            60% { transform: skew(1deg); }
-            100% { transform: skew(0deg); }
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 2px); }
+            40% { transform: translate(-3px, -2px); }
+            60% { transform: translate(3px, 2px); }
+            80% { transform: translate(3px, -2px); }
+            100% { transform: translate(0); }
         }
 
         .container:hover h1 {
-            animation: glitch 0.4s linear infinite;
+            animation: glitch 0.2s linear infinite;
+            color: #ddd;
         }
     </style>
 </head>
@@ -138,15 +173,16 @@
         </div>
 
         <div class="info">
-            <h1>sinwrldd</h1>
+            <h1>SINWRLDD</h1>
+            <div class="asta-text">ASTA LA VISTA (67)</div>
         </div>
     </div>
 
     <script>
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX - 5 + 'px';
-            cursor.style.top = e.clientY - 5 + 'px';
+            cursor.style.left = e.clientX - 7 + 'px';
+            cursor.style.top = e.clientY - 7 + 'px';
         });
     </script>
 </body>
