@@ -1,792 +1,503 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>JASS COIN SYSTEM</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KURAPIKA</title>
+    <style>
+        :root {
+            --matrix-green: #00FF41; 
+            --neon-cyan: #00FFFF;
+            --bg-color: #050505;
+            --panel-bg: rgba(10, 15, 10, 0.95);
+            --text-color: #E0FFE0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        canvas#matrix {
+            position: fixed;
+            top: 0; left: 0;
+            z-index: -1;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 650px;
+            background: var(--panel-bg);
+            border: 1px solid var(--matrix-green);
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.15);
+            z-index: 10;
+            backdrop-filter: blur(5px);
+        }
+
+        .corner {
+            position: absolute;
+            width: 15px; height: 15px;
+            border: 2px solid var(--matrix-green);
+            transition: 0.3s;
+        }
+        .tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+        .tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
+        .bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
+        .br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #003B00;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: var(--matrix-green);
+            font-weight: bold;
+        }
+
+        .blink-dot {
+            width: 10px; height: 10px;
+            background: var(--matrix-green);
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        .menu-trigger {
+            background: transparent;
+            color: var(--matrix-green);
+            border: 1px solid var(--matrix-green);
+            padding: 8px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-trigger:hover {
+            background: var(--matrix-green);
+            color: #000;
+            box-shadow: 0 0 20px var(--matrix-green);
+        }
+
+        .profile-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .avatar-frame {
+            width: 150px; 
+            height: 150px;
+            padding: 5px;
+            border: 2px solid var(--matrix-green);
+            margin-bottom: 20px;
+            background: #000;
+            position: relative;
+        }
+        
+        .avatar-frame::after {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border: 1px dashed var(--matrix-green);
+            z-index: -1;
+            animation: rotate 10s linear infinite;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: none; 
+        }
+
+        .hacker-name {
+            font-size: 2.2rem;
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--matrix-green);
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+        }
+
+        .terminal-box {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            border-left: 4px solid var(--matrix-green);
+            padding: 15px;
+            text-align: left;
+            min-height: 70px;
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+
+        .side-panel {
+            position: fixed;
+            top: 0; 
+            right: -350px;
+            width: 320px; 
+            height: 100%;
+            background: #020202;
+            border-left: 2px solid var(--matrix-green);
+            z-index: 100;
+            padding: 30px;
+            transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            box-shadow: -10px 0 60px rgba(0,0,0,1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .side-panel.active {
+            right: 0;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+
+        .panel-title {
+            color: var(--matrix-green);
+            letter-spacing: 3px;
+            text-shadow: 0 0 5px var(--matrix-green);
+        }
+
+        .close-icon {
+            background: none;
+            border: 1px solid #fff;
+            color: #fff;
+            width: 35px; height: 35px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .close-icon:hover {
+            background: #fff;
+            color: #000;
+            transform: rotate(90deg);
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .side-panel.active .nav-links li {
+            animation: slideInFade 0.5s forwards ease-out;
+        }
+
+        
+        .side-panel.active .nav-links li:nth-child(1) { animation-delay: 0.1s; }
+        .side-panel.active .nav-links li:nth-child(2) { animation-delay: 0.2s; }
+        .side-panel.active .nav-links li:nth-child(3) { animation-delay: 0.3s; }
+        .side-panel.active .nav-links li:nth-child(4) { animation-delay: 0.4s; }
+        .side-panel.active .nav-links li:nth-child(5) { animation-delay: 0.5s; }
+        .side-panel.active .nav-links li:nth-child(6) { animation-delay: 0.6s; } 
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            padding: 10px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+            color: #fff;
+            animation: neonPulse 3s infinite alternate;
+        }
+
+        .nav-links a:hover {
+            border: 1px solid var(--neon-cyan);
+            background: rgba(0, 255, 255, 0.1);
+            padding-left: 25px;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+            animation: none;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 90;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .chat-bubble {
+            position: fixed;
+            bottom: 25px; right: 25px;
+            width: 60px; height: 60px;
+            background: #000;
+            border: 2px solid var(--matrix-green);
+            border-radius: 50%;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            cursor: pointer;
+            z-index: 80;
+            transition: 0.3s;
+            box-shadow: 0 0 15px var(--matrix-green);
+        }
+
+        .chat-bubble:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--neon-cyan);
+            border-color: var(--neon-cyan);
+        }
+
+        .chat-bubble img {
+            width: 30px;
+            filter: brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
+        }
+
+        @keyframes blink { 
+            0%, 100% { opacity: 1; } 
+            50% { opacity: 0.2; } 
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideInFade {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes neonPulse {
+            0% {
+                color: #fff;
+                text-shadow: 0 0 2px #fff;
+            }
+            50% {
+                color: #e0ffe0;
+                text-shadow: 0 0 5px var(--matrix-green);
+            }
+            100% {
+                color: var(--neon-cyan);
+                text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container { width: 95%; padding: 20px; }
+            .hacker-name { font-size: 1.8rem; }
+            .side-panel { width: 85%; }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Background -->
-  <div id="particles-bg"></div>
-  <div class="noise-overlay"></div>
+    <canvas id="matrix"></canvas>
 
-  <!-- ===================== AUTH SCREEN ===================== -->
-  <div id="auth-screen" class="screen active">
-    <div class="login-container glass-panel squircle-lg">
-      <div class="panel-banner">
-        <div class="banner-glitch" data-text="JASS COIN SYSTEM">JASS COIN SYSTEM</div>
-        <div class="banner-sub">EARN COINS • GENERATE KEYS</div>
-        <div class="banner-line"></div>
-      </div>
+    <audio id="bg-music" loop>
+        <source src="kurapika.mp3" type="audio/mp3">
+    </audio>
 
-      <!-- Login Form -->
-      <div id="login-form" class="auth-form">
-        <div class="input-group">
-          <label><i class="fa fa-user"></i> USERNAME</label>
-          <input type="text" id="login-username" placeholder="Enter username" autocomplete="off" />
-        </div>
-        <div class="input-group">
-          <label><i class="fa fa-lock"></i> PASSWORD</label>
-          <div class="input-wrapper">
-            <input type="password" id="login-password" placeholder="Enter password" />
-            <button class="eye-toggle" onclick="toggleVisibility('login-password', this)"><i class="fa fa-eye-slash"></i></button>
-          </div>
-        </div>
-        <button class="btn-primary pulse-glow" onclick="userLogin()">
-          <i class="fa fa-sign-in-alt"></i> LOGIN
-        </button>
-        <div class="auth-footer">
-          <span>Don't have an account?</span>
-          <button class="btn-sm" onclick="showRegister()">Register</button>
-        </div>
-        <div id="login-error" class="error-msg hidden"></div>
-      </div>
+    <div class="overlay" id="overlay"></div>
 
-      <!-- Register Form -->
-      <div id="register-form" class="auth-form hidden">
-        <div id="register-success" class="register-success-msg hidden">
-          <i class="fa fa-circle-check"></i>
-          <div><strong>Account created!</strong><span>Please login now to continue.</span></div>
-        </div>
-        <div id="register-fields">
-          <div class="input-group">
-            <label><i class="fa fa-user"></i> USERNAME</label>
-            <input type="text" id="reg-username" placeholder="Choose username" autocomplete="off" />
-          </div>
-          <div class="input-group">
-            <label><i class="fa fa-lock"></i> PASSWORD</label>
-            <div class="input-wrapper">
-              <input type="password" id="reg-password" placeholder="Choose password" />
-              <button class="eye-toggle" onclick="toggleVisibility('reg-password', this)"><i class="fa fa-eye-slash"></i></button>
+    <div class="container">
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+
+        <div class="header">
+            <div class="status-indicator">
+                <div class="blink-dot"></div>
+                <span>SYSTEM ID: K-404</span>
             </div>
-          </div>
-          <div class="input-group">
-            <label><i class="fa fa-lock-open"></i> CONFIRM PASSWORD</label>
-            <div class="input-wrapper">
-              <input type="password" id="reg-confirm-password" placeholder="Repeat your password" />
-              <button class="eye-toggle" onclick="toggleVisibility('reg-confirm-password', this)"><i class="fa fa-eye-slash"></i></button>
+            <button class="menu-trigger" id="btn-open">ACCESS MENU</button>
+        </div>
+
+        <div class="profile-area">
+            <div class="avatar-frame">
+                <img src="kurapika.png" alt="Profile" class="avatar">
             </div>
-          </div>
-          <button class="btn-primary" onclick="userRegister()">
-            <i class="fa fa-user-plus"></i> REGISTER
-          </button>
-          <div id="register-error" class="error-msg hidden"></div>
-        </div>
-        <div class="auth-footer">
-          <button class="btn-sm" onclick="showLogin()"><i class="fa fa-arrow-left"></i> Back to Login</button>
-        </div>
-      </div>
+            
+            <h1 class="dev-name">CARIUS</h1>
 
-      <!-- Admin Button -->
-      <div class="admin-link">
-        <button class="btn-secondary" onclick="showAdminLogin()">
-          <i class="fa fa-shield-halved"></i> Admin Access
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================== ADMIN LOGIN MODAL ===================== -->
-  <div id="admin-login-modal" class="modal-overlay hidden" onclick="closeAdminModal(event)">
-    <div class="modal-box glass-panel squircle-lg">
-      <div class="modal-header">
-        <h3>ADMIN LOGIN</h3>
-        <button class="btn-icon" onclick="closeAdminModal()"><i class="fa fa-xmark"></i></button>
-      </div>
-      <div class="modal-body">
-        <div class="input-group">
-          <label><i class="fa fa-key"></i> MASTER KEY</label>
-          <div class="input-wrapper">
-            <input type="password" id="admin-master-key" placeholder="Enter master key" />
-            <button class="eye-toggle" onclick="toggleVisibility('admin-master-key', this)"><i class="fa fa-eye-slash"></i></button>
-          </div>
+            <div class="terminal-box">
+                <span style="color:var(--neon-cyan)">ABOUT ME</span> 
+                <span id="typewriter"></span><span style="animation:blink 0.8s infinite; color: var(--matrix-green);">█</span>
+            </div>
         </div>
-        <div id="admin-login-error" class="error-msg hidden"></div>
-        <button class="btn-primary" onclick="adminLogin()" style="margin-top:16px;">LOGIN</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================== USER DASHBOARD ===================== -->
-  <div id="user-dashboard" class="screen hidden">
-    <!-- Top Bar -->
-    <header class="topbar glass-panel">
-      <div class="topbar-left">
-        <button class="sidebar-toggle" onclick="toggleUserSidebar()">
-          <i class="fa fa-bars"></i>
-        </button>
-        <div class="topbar-brand">
-          <span class="brand-glyph">⬡</span>
-          <span class="brand-name">JASS COIN</span>
-        </div>
-      </div>
-      <div class="topbar-right">
-        <button class="btn-icon" onclick="toggleDarkLight()"><i class="fa fa-moon" id="theme-toggle-icon-user"></i></button>
-        <button class="btn-icon" onclick="toggleMusic()"><i class="fa fa-music" id="music-toggle-icon-user"></i></button>
-        <div class="topbar-user">
-          <div class="user-avatar" id="user-avatar">U</div>
-          <div class="user-info">
-            <span id="topbar-username"></span>
-            <span id="topbar-coins" class="role-badge">0 Coins</span>
-          </div>
-          <button class="btn-icon danger" onclick="userLogout()"><i class="fa fa-right-from-bracket"></i></button>
-        </div>
-      </div>
-    </header>
-
-    <!-- Announcement Bar (visible to all users) -->
-    <div id="user-announcement-bar" class="announcement-bar hidden">
-      <i class="fa fa-bullhorn"></i>
-      <span class="ann-text" id="user-announcement-text"></span>
     </div>
 
-    <div class="dashboard-layout">
-      <!-- Sidebar -->
-      <aside id="user-sidebar" class="sidebar glass-panel">
-        <nav class="sidebar-nav">
-          <div class="nav-section-label">MAIN</div>
-          <a class="nav-item active" onclick="showUserSection('overview')" data-section="overview">
-            <i class="fa fa-gauge-high"></i><span>Overview</span>
-          </a>
-          <a class="nav-item" onclick="showUserSection('keygen')" data-section="keygen">
-            <i class="fa fa-wand-magic-sparkles"></i><span>Key Generator</span>
-          </a>
-          <a class="nav-item" onclick="showUserSection('mykeys')" data-section="mykeys">
-            <i class="fa fa-key"></i><span>My Keys</span>
-          </a>
-          <a class="nav-item" onclick="showUserSection('coupon')" data-section="coupon">
-            <i class="fa fa-ticket"></i><span>Redeem Coupon</span>
-          </a>
-          <a class="nav-item" onclick="showUserSection('injector')" data-section="injector">
-            <i class="fa fa-download"></i><span>Latest Injector</span>
-          </a>
-          <a class="nav-item" onclick="showUserSection('messaging')" data-section="messaging">
-            <i class="fa fa-comments"></i><span>Global Chat</span>
-            <span id="user-chat-badge" class="nav-unread-badge hidden"></span>
-          </a>
-          <a class="nav-item" onclick="showUserSection('account')" data-section="account">
-            <i class="fa fa-circle-user"></i><span>Account</span>
-          </a>
-        </nav>
-        <div class="sidebar-footer">
-          <div class="system-health">
-            <span class="status-dot active"></span>
-            <span>Connected</span>
-          </div>
-          <div id="user-sidebar-clock" class="sidebar-clock"></div>
+    <div class="side-panel" id="side-panel">
+        <div class="panel-header">
+            <h3 class="panel-title">// SYSTEM TOOLS</h3>
+            <button class="close-icon" id="btn-close">X</button>
         </div>
-      </aside>
-
-      <!-- Main Content -->
-      <main class="main-content" id="user-main-content">
-        <!-- Overview Section -->
-        <section id="user-section-overview" class="content-section active">
-          <div class="section-header">
-            <h2><i class="fa fa-gauge-high"></i> OVERVIEW</h2>
-          </div>
-          <div class="stats-grid">
-            <div class="stat-card glass-panel squircle">
-              <div class="stat-icon"><i class="fa fa-coins"></i></div>
-              <div class="stat-data"><span id="user-coins-display">0</span><label>Your Coins</label></div>
-            </div>
-            <div class="stat-card glass-panel squircle">
-              <div class="stat-icon"><i class="fa fa-key"></i></div>
-              <div class="stat-data"><span id="user-keys-count">0</span><label>Keys Generated</label></div>
-            </div>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-header">
-              <span><i class="fa fa-chart-line"></i> CURRENT RATES</span>
-            </div>
-            <div class="panel-section-body">
-              <div class="info-text">Base key cost: <strong id="base-cost">0</strong> coins</div>
-              <div class="info-text">Extra device slot: <strong id="device-cost">0</strong> coins each</div>
-              <div class="info-text">Add time: <span id="time-costs"></span></div>
-              <div class="info-text">Currency rate: <strong id="currency-rate">1.00</strong> (coins per ₱0.01)</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Key Generator -->
-        <section id="user-section-keygen" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-wand-magic-sparkles"></i> GENERATE KEY</h2>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-body">
-              <div class="toggle-group">
-                <label class="toggle-label">
-                  <input type="checkbox" id="key-mode-toggle" onchange="toggleKeyMode()">
-                  <span class="toggle-switch"></span>
-                  Custom Key Mode
-                </label>
-              </div>
-              <div id="random-key-section">
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>PREFIX</label>
-                    <input type="text" id="key-prefix" value="JASS" maxlength="12">
-                  </div>
-                  <div class="form-group">
-                    <label>DURATION</label>
-                    <select id="key-duration" onchange="updateKeyCost()">
-                      <option value="sec">Seconds</option>
-                      <option value="min">Minutes</option>
-                      <option value="hour">Hours</option>
-                      <option value="day">Days</option>
-                      <option value="week">Weeks</option>
-                      <option value="month">Months</option>
-                      <option value="year">Years</option>
-                      <option value="lifetime">Lifetime</option>
-                    </select>
-                    <input type="number" id="key-duration-value" min="1" value="1" onchange="updateKeyCost()" style="margin-top:4px;">
-                  </div>
-                  <div class="form-group">
-                    <label>DEVICE LIMIT</label>
-                    <input type="number" id="key-limit" value="1" min="1" max="10" onchange="updateKeyCost()">
-                  </div>
-                </div>
-              </div>
-              <div id="custom-key-section" class="hidden">
-                <div class="form-group">
-                  <label>ENTER KEY (Custom)</label>
-                  <input type="text" id="custom-key-input" placeholder="e.g. MYKEY-1234-ABCD">
-                </div>
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>DURATION</label>
-                    <select id="custom-key-duration" onchange="updateKeyCost()">
-                      <option value="sec">Seconds</option>
-                      <option value="min">Minutes</option>
-                      <option value="hour">Hours</option>
-                      <option value="day">Days</option>
-                      <option value="week">Weeks</option>
-                      <option value="month">Months</option>
-                      <option value="year">Years</option>
-                      <option value="lifetime">Lifetime</option>
-                    </select>
-                    <input type="number" id="custom-key-duration-value" min="1" value="1" onchange="updateKeyCost()" style="margin-top:4px;">
-                  </div>
-                  <div class="form-group">
-                    <label>DEVICE LIMIT</label>
-                    <input type="number" id="custom-key-limit" value="1" min="1" max="10" onchange="updateKeyCost()">
-                  </div>
-                </div>
-              </div>
-              <div class="info-text" style="text-align:center;margin:12px 0">
-                Total cost: <strong id="key-total-cost">0</strong> coins
-              </div>
-              <button class="btn-primary" onclick="generateUserKey()">
-                <i class="fa fa-wand-magic-sparkles"></i> GENERATE (SPEND COINS)
-              </button>
-              <div id="key-result" class="keygen-result hidden">
-                <div class="result-key-box">
-                  <span id="generated-key"></span>
-                  <button onclick="copyToClipboard('generated-key')"><i class="fa fa-copy"></i></button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- My Keys -->
-        <section id="user-section-mykeys" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-key"></i> MY KEYS</h2>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-body">
-              <div id="user-keys-list" class="keys-card-grid"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Coupon -->
-        <section id="user-section-coupon" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-ticket"></i> REDEEM COUPON</h2>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-body">
-              <div class="form-row">
-                <input type="text" id="coupon-code" placeholder="Enter coupon code" class="flex-input">
-                <button class="btn-primary" onclick="redeemCoupon()">Redeem</button>
-              </div>
-              <div id="coupon-message" class="info-banner hidden"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Latest Injector (user) -->
-        <section id="user-section-injector" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-download"></i> LATEST INJECTOR</h2>
-          </div>
-          <div id="user-injector-list" class="injector-list"></div>
-        </section>
-
-        <!-- Global Chat -->
-        <section id="user-section-messaging" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-comments"></i> GLOBAL CHAT</h2>
-          </div>
-          <div class="msg-layout" style="grid-template-columns:1fr;height:calc(100vh - 220px);min-height:360px">
-            <div class="msg-main glass-panel">
-              <div class="msg-channel-header">
-                <span><i class="fa fa-globe"></i> public</span>
-                <span class="msg-channel-desc">Everyone can chat here</span>
-              </div>
-              <div class="msg-messages" id="user-msg-messages">
-                <div class="msg-empty">No messages yet.</div>
-              </div>
-              <div id="user-chat-context-bar" class="chat-context-bar hidden"></div>
-              <div class="msg-input-area">
-                <input type="text" id="user-msg-input" class="msg-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendUserMessage()">
-                <button class="msg-send-btn" onclick="sendUserMessage()"><i class="fa fa-paper-plane"></i></button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Account -->
-        <section id="user-section-account" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-circle-user"></i> MY ACCOUNT</h2>
-          </div>
-
-          <!-- Profile Card -->
-          <div class="glass-panel squircle account-profile-card">
-            <div class="account-avatar-wrap">
-              <div class="profile-avatar-lg" id="user-profile-avatar">U</div>
-            </div>
-            <div class="account-profile-info">
-              <h3 class="account-username" id="user-profile-name"></h3>
-              <span id="user-role-badge" class="role-badge">User</span>
-            </div>
-            <div class="account-stats">
-              <div class="account-stat">
-                <span class="account-stat-value" id="account-coins-display">0</span>
-                <span class="account-stat-label"><i class="fa fa-coins"></i> Coins</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- User Info -->
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-header">
-              <span><i class="fa fa-id-card"></i> USER INFO</span>
-            </div>
-            <div class="panel-section-body">
-              <div class="info-rows">
-                <div class="info-row-item">
-                  <span class="info-row-label"><i class="fa fa-user"></i> Username</span>
-                  <span class="info-row-value" id="account-info-username">—</span>
-                </div>
-                <div class="info-row-item">
-                  <span class="info-row-label"><i class="fa fa-coins"></i> Balance</span>
-                  <span class="info-row-value coins-value"><span id="account-info-coins">0</span> Coins</span>
-                </div>
-                <div class="info-row-item">
-                  <span class="info-row-label"><i class="fa fa-shield"></i> Role</span>
-                  <span class="info-row-value" id="account-info-role">User</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Change Password -->
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-header">
-              <span><i class="fa fa-lock"></i> CHANGE PASSWORD</span>
-            </div>
-            <div class="panel-section-body">
-              <div class="form-group" style="max-width: 360px;">
-                <label>New Password</label>
-                <div class="input-wrapper">
-                  <input type="password" id="user-new-password" placeholder="Enter new password">
-                  <button class="eye-toggle" onclick="toggleVisibility('user-new-password', this)"><i class="fa fa-eye-slash"></i></button>
-                </div>
-              </div>
-              <button class="btn-primary" style="max-width: 220px; margin-top: 6px;" onclick="changeUserPassword()">
-                <i class="fa fa-save"></i> UPDATE PASSWORD
-              </button>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
-  </div>
-
-  <!-- ===================== ADMIN DASHBOARD ===================== -->
-  <div id="admin-dashboard" class="screen hidden">
-    <!-- Top Bar -->
-    <header class="topbar glass-panel">
-      <div class="topbar-left">
-        <button class="sidebar-toggle" onclick="toggleAdminSidebar()">
-          <i class="fa fa-bars"></i>
-        </button>
-        <div class="topbar-brand">
-          <span class="brand-glyph">⬡</span>
-          <span class="brand-name">JASS ADMIN</span>
-        </div>
-      </div>
-      <div class="topbar-center">
-        <div class="global-search-bar">
-          <i class="fa fa-magnifying-glass"></i>
-          <input type="text" placeholder="Search keys/users..." id="admin-global-search" oninput="adminGlobalSearch(this.value)">
-        </div>
-      </div>
-      <div class="topbar-right">
-        <div class="topbar-stats">
-          <div class="stat-pill"><i class="fa fa-circle-dot green"></i> <span id="admin-online-count">0</span> ONLINE</div>
-          <div class="stat-pill"><i class="fa fa-key"></i> <span id="admin-total-keys">0</span> KEYS</div>
-        </div>
-        <button class="btn-icon" onclick="toggleDarkLight()"><i class="fa fa-moon" id="theme-toggle-icon-admin"></i></button>
-        <button class="btn-icon" onclick="toggleMusic()"><i class="fa fa-music" id="music-toggle-icon-admin"></i></button>
-        <div class="topbar-user">
-          <div class="user-avatar" id="admin-avatar">A</div>
-          <div class="user-info">
-            <span id="admin-name"></span>
-            <span id="admin-role" class="role-badge">ADMIN</span>
-          </div>
-          <button class="btn-icon danger" onclick="adminLogout()"><i class="fa fa-right-from-bracket"></i></button>
-        </div>
-      </div>
-    </header>
-
-    <!-- Announcement Bar (admin view) -->
-    <div id="admin-announcement-bar" class="announcement-bar hidden">
-      <i class="fa fa-bullhorn"></i>
-      <span class="ann-text" id="admin-announcement-text"></span>
-      <button class="ann-close-btn" onclick="announcementClear()" title="Clear announcement"><i class="fa fa-xmark"></i></button>
+        <ul class="nav-links">
+            <li><a href="https://share-v88q.onrender.com" target="_blank">01 :: Spam Share Tool</a></li>
+            <li><a href="https://www.facebook.com/61586962362005" target="_blank">02 :: Girl Best Friend</a></li>
+            <li><a href="https://www.facebook.com/61587119940196" target="_blank">03 :: My Facebook</a></li>
+            <li><a href="https://www.facebook.com/61582720567876" target="_blank">04 :: My Girlfriend</a></li>
+            <li><a href="https://github.com/ZarkDev098" target="_blank">05 :: GitHub</a></li>
+            <li><a href="https://www.Discord.com/JzSanji" target="_blank">06 :: Discord</a></li>
+        </ul>
     </div>
 
-    <div class="dashboard-layout">
-      <!-- Sidebar -->
-      <aside id="admin-sidebar" class="sidebar glass-panel">
-        <nav class="sidebar-nav">
-          <div class="nav-section-label">MAIN</div>
-          <a class="nav-item active" onclick="showAdminSection('overview')" data-section="overview">
-            <i class="fa fa-gauge-high"></i><span>Overview</span>
-          </a>
-          <a class="nav-item" onclick="showAdminSection('keys')" data-section="keys">
-            <i class="fa fa-key"></i><span>Key Manager</span>
-          </a>
-          <a class="nav-item" onclick="showAdminSection('userinfo')" data-section="userinfo">
-            <i class="fa fa-users"></i><span>User Info</span>
-          </a>
-          <a class="nav-item" onclick="showAdminSection('coupons')" data-section="coupons">
-            <i class="fa fa-ticket"></i><span>Coupons</span>
-          </a>
-          <a class="nav-item" onclick="showAdminSection('injector')" data-section="injector">
-            <i class="fa fa-download"></i><span>Injector Manager</span>
-          </a>
-          <a class="nav-item" onclick="showAdminSection('messaging')" data-section="messaging">
-            <i class="fa fa-comments"></i><span>Global Chat</span>
-            <span id="admin-chat-badge" class="nav-unread-badge hidden"></span>
-          </a>
-          <div class="nav-section-label owner-only hidden">OWNER CONTROLS</div>
-          <a class="nav-item owner-only hidden" onclick="showAdminSection('announcement')" data-section="announcement">
-            <i class="fa fa-bullhorn"></i><span>Announcement</span>
-          </a>
-          <a class="nav-item owner-only hidden" onclick="showAdminSection('system')" data-section="system">
-            <i class="fa fa-sliders"></i><span>System Config</span>
-          </a>
-          <a class="nav-item owner-only hidden" onclick="showAdminSection('revenue')" data-section="revenue">
-            <i class="fa fa-coins"></i><span>Revenue</span>
-          </a>
-          <div class="nav-section-label">ACCOUNT</div>
-          <a class="nav-item" onclick="showAdminSection('myaccount')" data-section="myaccount">
-            <i class="fa fa-circle-user"></i><span>My Account</span>
-          </a>
-        </nav>
-        <div class="sidebar-footer">
-          <div class="system-health">
-            <span class="status-dot active"></span>
-            <span>Connected</span>
-          </div>
-          <div id="admin-sidebar-clock" class="sidebar-clock"></div>
-        </div>
-      </aside>
-
-      <main class="main-content" id="admin-main-content">
-        <!-- Overview Section -->
-        <section id="admin-section-overview" class="content-section active">
-          <div class="section-header">
-            <h2><i class="fa fa-gauge-high"></i> ADMIN OVERVIEW</h2>
-            <button class="btn-sm" onclick="refreshAdminOverview()"><i class="fa fa-rotate"></i> Refresh</button>
-          </div>
-          <div class="stats-grid">
-            <div class="stat-card glass-panel squircle"><div class="stat-icon"><i class="fa fa-users"></i></div><div class="stat-data"><span id="admin-total-users">0</span><label>Total Users</label></div></div>
-            <div class="stat-card glass-panel squircle"><div class="stat-icon"><i class="fa fa-key"></i></div><div class="stat-data"><span id="overview-total-keys">0</span><label>Total Keys</label></div></div>
-            <div class="stat-card glass-panel squircle"><div class="stat-icon green"><i class="fa fa-coins"></i></div><div class="stat-data"><span id="admin-total-coins">0</span><label>Coins in Circulation</label></div></div>
-            <div class="stat-card glass-panel squircle"><div class="stat-icon yellow"><i class="fa fa-peso-sign"></i></div><div class="stat-data"><span id="admin-revenue">₱0</span><label>Revenue</label></div></div>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-header"><span><i class="fa fa-chart-line"></i> SYSTEM HEALTH</span></div>
-            <div class="panel-section-body">
-              <div class="health-grid">
-                <div class="health-item"><label>Currency Rate</label><div><span id="health-currency-rate">1.00</span> coins/₱0.01</div></div>
-                <div class="health-item"><label>Key Base Cost</label><div><span id="health-key-cost">0</span> coins</div></div>
-                <div class="health-item"><label>Device Extra</label><div><span id="health-device-cost">0</span> coins</div></div>
-                <div class="health-item"><label>Time Costs</label><div id="health-time-costs"></div></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Key Manager -->
-        <section id="admin-section-keys" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-key"></i> KEY MANAGER</h2>
-            <div class="section-actions">
-              <input type="text" id="admin-key-search" placeholder="Search key ID..." class="search-input" oninput="filterAdminKeys()">
-              <select id="admin-key-status" class="filter-select" onchange="filterAdminKeys()">
-                <option value="all">All Status</option>
-                <option value="active">Active</option>
-                <option value="banned">Banned</option>
-                <option value="frozen">Frozen</option>
-                <option value="expired">Expired</option>
-              </select>
-              <button class="btn-sm danger" onclick="batchDeleteExpired()"><i class="fa fa-trash"></i> Clear Expired</button>
-            </div>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-header collapsible" onclick="toggleCollapse(this)"><span><i class="fa fa-list"></i> ALL KEYS</span><i class="fa fa-chevron-down collapse-icon"></i></div>
-            <div class="panel-section-body">
-              <div class="bulk-bar hidden" id="admin-bulk-bar"><span id="admin-bulk-count">0 selected</span><button class="btn-sm success" onclick="adminBulkAction('unfreeze')">Unfreeze</button><button class="btn-sm warning" onclick="adminBulkAction('freeze')">Freeze</button><button class="btn-sm danger" onclick="adminBulkAction('ban')">Ban</button><button class="btn-sm danger" onclick="adminBulkAction('delete')">Delete</button><button class="btn-sm" onclick="clearAdminBulk()">Clear</button></div>
-              <div id="admin-keys-grid" class="keys-card-grid"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- User Info (owner can change roles) -->
-        <section id="admin-section-userinfo" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-id-card"></i> USER INFO</h2>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-body">
-              <div id="user-info-list"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Coupons -->
-        <section id="admin-section-coupons" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-ticket"></i> COUPON MANAGEMENT</h2>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-header collapsible" onclick="toggleCollapse(this)"><span><i class="fa fa-plus"></i> CREATE COUPON</span><i class="fa fa-chevron-down collapse-icon"></i></div>
-            <div class="panel-section-body">
-              <div class="form-grid">
-                <div class="form-group"><label>Code</label><input type="text" id="new-coupon-code" placeholder="e.g. JASS100"></div>
-                <div class="form-group"><label>Value (coins)</label><input type="number" id="new-coupon-value" placeholder="100"></div>
-                <div class="form-group"><label>Expires (optional)</label><input type="date" id="new-coupon-expires"></div>
-                <div class="form-group"><label>Max Uses</label><input type="number" id="new-coupon-uses" value="0" placeholder="0 = unlimited"></div>
-              </div>
-              <button class="btn-primary" onclick="createCoupon()">Create Coupon</button>
-            </div>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-header collapsible" onclick="toggleCollapse(this)"><span><i class="fa fa-list"></i> EXISTING COUPONS</span><i class="fa fa-chevron-down collapse-icon"></i></div>
-            <div class="panel-section-body">
-              <div id="admin-coupons-list" class="coupons-list"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Injector Manager (owner can add/edit/delete) -->
-        <section id="admin-section-injector" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-download"></i> INJECTOR MANAGER</h2>
-            <button class="btn-primary" onclick="showAddInjectorModal()"><i class="fa fa-plus"></i> Add Injector</button>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-body">
-              <div id="injector-manager-list" class="injector-manager-list"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Global Chat (admin) -->
-        <section id="admin-section-messaging" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-comments"></i> GLOBAL CHAT</h2>
-            <button class="btn-sm danger owner-only" onclick="adminClearChat()" style="display:none" id="admin-clear-chat-btn"><i class="fa fa-broom"></i> Clear Chat</button>
-          </div>
-          <div class="msg-layout" style="grid-template-columns:1fr;height:calc(100vh - 200px);min-height:360px">
-            <div class="msg-main glass-panel">
-              <div class="msg-channel-header">
-                <span><i class="fa fa-globe"></i> public</span>
-                <span class="msg-channel-desc">Everyone can chat here</span>
-              </div>
-              <div class="msg-messages" id="admin-msg-messages">
-                <div class="msg-empty">No messages yet.</div>
-              </div>
-              <div id="admin-chat-context-bar" class="chat-context-bar hidden"></div>
-              <div class="msg-input-area">
-                <input type="text" id="admin-msg-input" class="msg-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendAdminMessage()">
-                <button class="msg-send-btn" onclick="sendAdminMessage()"><i class="fa fa-paper-plane"></i></button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Announcement (owner only) -->
-        <section id="admin-section-announcement" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-bullhorn"></i> ANNOUNCEMENT</h2>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-header"><span><i class="fa fa-info-circle"></i> SET ANNOUNCEMENT</span></div>
-            <div class="panel-section-body">
-              <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;">
-                This message will appear at the top of the screen for ALL users and cannot be dismissed until you clear it.
-              </p>
-              <div class="form-group">
-                <label>Announcement Text</label>
-                <textarea id="announcement-text" rows="3" placeholder="e.g. Server maintenance at 10PM tonight. Stay tuned!"></textarea>
-              </div>
-              <div class="btn-row">
-                <button class="btn-primary" onclick="saveAnnouncement()"><i class="fa fa-bullhorn"></i> Broadcast</button>
-                <button class="btn-danger" onclick="clearAnnouncement()"><i class="fa fa-xmark"></i> Clear</button>
-              </div>
-              <div id="announcement-status" class="info-banner hidden" style="margin-top:12px;"></div>
-            </div>
-          </div>
-          <div class="glass-panel squircle panel-section" style="margin-top:12px;">
-            <div class="panel-section-header"><span><i class="fa fa-eye"></i> CURRENT ANNOUNCEMENT</span></div>
-            <div class="panel-section-body">
-              <div id="current-announcement-preview" style="color:var(--text-muted);font-size:0.85rem;">No active announcement.</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- System Config (owner only) -->
-        <section id="admin-section-system" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-sliders"></i> SYSTEM CONFIGURATION</h2>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-header"><span>Currency & Costs</span></div>
-            <div class="panel-section-body">
-              <div class="form-grid">
-                <div class="form-group"><label>Coins per ₱1 <span style="color:var(--gold)">(1₱ = 10 coins)</span></label><input type="number" id="cfg-currency-rate" step="1" min="1" value="10"><small>Multiply all coin costs by this rate</small></div>
-                <div class="form-group"><label>Base Key Cost (coins)</label><input type="number" id="cfg-key-cost" min="1" value="5"></div>
-                <div class="form-group"><label>Extra Device Cost (coins/slot)</label><input type="number" id="cfg-device-cost" min="0" value="50"></div>
-              </div>
-              <div class="form-group"><label>Time Costs (coins per unit)</label><div class="form-grid">
-                <div class="form-group"><label>Per Second</label><input type="number" id="cfg-cost-sec" min="0" step="0.01" value="0.10"></div>
-                <div class="form-group"><label>Per Minute</label><input type="number" id="cfg-cost-min" min="0" step="0.1" value="1"></div>
-                <div class="form-group"><label>Per Hour</label><input type="number" id="cfg-cost-hour" min="0" step="1" value="10"></div>
-                <div class="form-group"><label>Per Day</label><input type="number" id="cfg-cost-day" min="0" step="1" value="100"></div>
-                <div class="form-group"><label>Per Week</label><input type="number" id="cfg-cost-week" min="0" step="1" value="500"></div>
-                <div class="form-group"><label>Per Month</label><input type="number" id="cfg-cost-month" min="0" step="1" value="1000"></div>
-                <div class="form-group"><label>Per Year</label><input type="number" id="cfg-cost-year" min="0" step="1" value="10000"></div>
-                <div class="form-group"><label>Lifetime (flat)</label><input type="number" id="cfg-cost-lifetime" min="0" step="1" value="50000"></div>
-              </div></div>
-              <button class="btn-primary" onclick="saveSystemConfig()">Save Configuration</button>
-            </div>
-          </div>
-        </section>
-
-        <!-- Revenue (owner only) -->
-        <section id="admin-section-revenue" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-coins"></i> REVENUE</h2>
-            <button class="btn-sm danger owner-only" onclick="clearSalesHistory()"><i class="fa fa-trash"></i> Clear History</button>
-          </div>
-          <div class="stats-grid">
-            <div class="stat-card glass-panel squircle"><div class="stat-icon green"><i class="fa fa-peso-sign"></i></div><div class="stat-data"><span id="rev-today">₱0</span><label>Today</label></div></div>
-            <div class="stat-card glass-panel squircle"><div class="stat-icon blue"><i class="fa fa-calendar-week fa-fw"></i></div><div class="stat-data"><span id="rev-week">₱0</span><label>This Week</label></div></div>
-            <div class="stat-card glass-panel squircle"><div class="stat-icon" style="color:var(--info);background:rgba(68,170,255,0.08);border-color:rgba(68,170,255,0.2)"><i class="fa fa-calendar-days fa-fw"></i></div><div class="stat-data"><span id="rev-month">₱0</span><label>This Month</label></div></div>
-            <div class="stat-card glass-panel squircle"><div class="stat-icon yellow"><i class="fa fa-chart-line"></i></div><div class="stat-data"><span id="rev-total">₱0</span><label>Total</label></div></div>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-header"><span>Sales History</span></div>
-            <div class="panel-section-body">
-              <div class="table-wrapper">
-                <table class="data-table">
-                  <thead> <th>Date</th><th>User</th><th>Item</th><th>Amount</th><th>Coins Spent</th> </thead>
-                  <tbody id="sales-tbody"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- My Account (admin) -->
-        <section id="admin-section-myaccount" class="content-section hidden">
-          <div class="section-header">
-            <h2><i class="fa fa-circle-user"></i> MY ACCOUNT</h2>
-          </div>
-          <div class="glass-panel squircle panel-section">
-            <div class="panel-section-body">
-              <div class="profile-display">
-                <div class="profile-avatar" id="admin-profile-avatar">A</div>
-                <div class="profile-info">
-                  <h3 id="admin-profile-name"></h3>
-                  <span id="admin-profile-role" class="role-badge"></span>
-                </div>
-              </div>
-              <div class="form-group"><label>Change Password</label><div class="input-wrapper"><input type="password" id="admin-new-password" placeholder="New password"><button class="eye-toggle" onclick="toggleVisibility('admin-new-password', this)"><i class="fa fa-eye-slash"></i></button></div><button class="btn-sm" onclick="changeAdminPassword()">Update</button></div>
-            </div>
-          </div>
-        </section>
-      </main>
+    <div class="chat-bubble" id="chat-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Facebook_Messenger_logo_2020.svg" alt="Chat">
     </div>
-  </div>
 
-  <!-- Sidebar backdrop for mobile -->
-  <div id="sidebar-backdrop" class="sidebar-backdrop hidden" onclick="closeSidebars()"></div>
+    <script>
+        
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
 
-  <!-- Custom Confirm Modal -->
-  <div id="confirm-overlay" class="modal-overlay hidden">
-    <div class="modal-box confirm-modal-box glass-panel squircle-lg">
-      <div class="confirm-modal-icon" id="confirm-icon"><i class="fa fa-triangle-exclamation"></i></div>
-      <h3 id="confirm-title">Confirm</h3>
-      <p id="confirm-message">Are you sure?</p>
-      <div class="confirm-modal-actions">
-        <button class="btn-secondary" id="confirm-cancel-btn" onclick="confirmCancel()">Cancel</button>
-        <button class="btn-danger" id="confirm-ok-btn" onclick="confirmOk()">Confirm</button>
-      </div>
-    </div>
-  </div>
+        let drops = []; 
+        const fontSize = 14;
+        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン'; 
 
-  <!-- Modals, Toast, Context Menu -->
-  <div id="modal-overlay" class="modal-overlay hidden" onclick="closeModal(event)">
-    <div class="modal-box glass-panel squircle-lg"><div class="modal-header"><h3 id="modal-title">Modal</h3><button class="btn-icon" onclick="closeModal()"><i class="fa fa-xmark"></i></button></div><div class="modal-body" id="modal-body"></div><div class="modal-footer" id="modal-footer"></div></div>
-  </div>
-  <div id="toast-container"></div>
-  <div id="context-menu" class="context-menu glass-panel hidden"><div id="context-menu-items"></div></div>
+        function initMatrix() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const columns = canvas.width / fontSize;
+            drops = Array(Math.floor(columns)).fill(1);
+        }
 
-  <!-- Disabled User Overlay -->
-  <div id="disabled-overlay" class="disabled-overlay hidden">
-    <i class="fa fa-ban"></i>
-    <h2>ACCOUNT DISABLED</h2>
-    <p>Your account has been disabled by the owner.</p>
-    <p>Please contact the owner to resolve this.</p>
-    <small>@jassmukangburat</small>
-    <button class="btn-secondary" onclick="userLogout()" style="margin-top:16px;width:auto;padding:10px 24px;"><i class="fa fa-right-from-bracket"></i> Logout</button>
-  </div>
+        
+        initMatrix();
 
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        
+        window.addEventListener('resize', initMatrix);
 
-  <!-- Disabled User Overlay -->
- 
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  <script src="firebase-config.js"></script>
-  <script src="firebase-api.js"></script>
-  <script src="ui-effects.js"></script>
-  <script src="app.js"></script>
-  <script src="features.js"></script>
-  <script src="sounds.js"></script>
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0'; 
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(draw, 35);
+
+        
+        const btnOpen = document.getElementById('btn-open');
+        const btnClose = document.getElementById('btn-close');
+        const sidePanel = document.getElementById('side-panel');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu(state) {
+            if (state) {
+                sidePanel.classList.add('active');
+                overlay.classList.add('active');
+            } else {
+                sidePanel.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+        }
+
+        btnOpen.addEventListener('click', () => toggleMenu(true));
+        btnClose.addEventListener('click', () => toggleMenu(false));
+        overlay.addEventListener('click', () => toggleMenu(false));
+
+        
+        const texts = [
+            "HI MY NAME IS CARIUS FROM UNITED STATE",
+            "I'M INFORMATION TECHNOLOGY STUDENT-2021",
+            "MY BDAY MAY 15, 2008",
+            "THANKS FOR VISIT MY PERSONAL WEBSITE",
+        ];
+        let count = 0;
+        let index = 0;
+        let currentText = '';
+        let letter = '';
+
+        (function type() {
+            if (count === texts.length) count = 0;
+            currentText = texts[count];
+            letter = currentText.slice(0, ++index);
+
+            document.getElementById('typewriter').textContent = letter;
+
+            if (letter.length === currentText.length) {
+                count++;
+                index = 0;
+                setTimeout(type, 2000);
+            } else {
+                setTimeout(type, 80);
+            }
+        }());
+
+        
+        document.getElementById('chat-btn').addEventListener('click', () => {
+            window.open('https://m.me/61587119940196', '_blank');
+        });
+        
+        
+        document.body.addEventListener('click', () => {
+            document.getElementById('bg-music').play().catch((e) => {
+                console.log("Audio play failed (user might need to interact more): ", e);
+            });
+        }, { once: true });
+
+    </script>
 </body>
 </html>
