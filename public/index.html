@@ -4,22 +4,170 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sinwrldd | Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --card-bg: #111214;
+            --discord-blurple: #5865F2;
+            --text-main: #f2f3f5;
+            --text-muted: #b5bac1;
+            --online-green: #23a55a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .profile-card {
+            width: 340px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            animation: fadeInScale 0.6s ease-out forwards;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 60px rgba(88, 101, 242, 0.15);
+        }
+
+        .banner {
+            height: 105px;
+            background: linear-gradient(45deg, #5865F2, #313338);
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            margin-top: -45px;
+            margin-left: 16px;
+            width: 92px;
+            height: 92px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 6px solid var(--card-bg);
+            background-color: #313338;
+            transition: transform 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: rotate(5deg) scale(1.05);
+        }
+
+        .status-dot {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 18px;
+            height: 18px;
+            background-color: var(--online-green);
+            border: 4px solid var(--card-bg);
+            border-radius: 50%;
+        }
+
+        .content {
+            padding: 16px;
+        }
+
+        .user-info {
+            margin-bottom: 12px;
+        }
+
+        .display-name {
+            display: block;
+            color: var(--text-main);
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .username {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.08);
+            margin: 16px 0;
+        }
+
+        .section {
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            color: var(--text-main);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            letter-spacing: 0.8px;
+        }
+
+        .section-text {
+            color: var(--text-muted);
+            font-size: 13.5px;
+            line-height: 1.5;
+        }
+
+        .message-input input {
+            width: 100%;
+            background-color: #1e1f22;
+            border: 1px solid transparent;
+            padding: 10px 12px;
+            border-radius: 4px;
+            color: var(--text-main);
+            margin-top: 8px;
+            outline: none;
+            transition: border 0.2s ease;
+        }
+
+        .message-input input:focus {
+            border: 1px solid var(--discord-blurple);
+        }
+    </style>
 </head>
 <body>
+
     <div class="profile-card">
         <div class="banner"></div>
         <div class="avatar-wrapper">
-            <img src="https://via.placeholder.com/80" alt="Avatar" class="avatar">
+            <img src="https://i.pravatar.cc/150?u=sinwrldd" alt="Avatar" class="avatar">
             <div class="status-dot"></div>
         </div>
         
         <div class="content">
-            <div class="badge-container">
-                <span class="badge" title="Developer">💻</span>
-                <span class="badge" title="Verified">✔️</span>
-            </div>
-
             <div class="user-info">
                 <span class="display-name">sinwrldd</span>
                 <span class="username">sinwrldd</span>
@@ -28,13 +176,13 @@
             <div class="divider"></div>
 
             <div class="section">
-                <p class="section-title">ABOUT ME</p>
+                <p class="section-title">About Me</p>
                 <p class="section-text">Full-stack developer focused on clean code and interactive experiences. Building the future one commit at a time.</p>
             </div>
 
             <div class="section">
-                <p class="section-title">DISCORD MEMBER SINCE</p>
-                <p class="section-text">Jan 1, 2020</p>
+                <p class="section-title">Member Since</p>
+                <p class="section-text">Jan 1, 2026</p>
             </div>
 
             <div class="message-input">
@@ -42,5 +190,6 @@
             </div>
         </div>
     </div>
+
 </body>
 </html>
