@@ -20,7 +20,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none;
             user-select: none;
             -webkit-user-select: none;
             -webkit-touch-callout: none;
@@ -36,19 +35,6 @@
             font-family: 'Syncopate', sans-serif;
             overflow: hidden;
             touch-action: none;
-        }
-
-        #cursor {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: #fff;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            box-shadow: 0 0 15px #fff;
-            transition: transform 0.1s ease;
         }
 
         .profile-card {
@@ -141,7 +127,7 @@
 
         .profile-card:hover .avatar {
             border-color: var(--accent);
-            transform: scale(1.05) rotate(5deg);
+            transform: scale(1.05);
         }
 
         .content {
@@ -238,8 +224,6 @@
 </head>
 <body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
 
-    <div id="cursor"></div>
-
     <audio id="bgMusic" loop>
         <source src="kurapika.mp3" type="audio/mpeg">
     </audio>
@@ -260,7 +244,7 @@
 
         <div class="content">
             <div class="username">
-                SINWRLDD</span>
+                SINWRLDD
                 <div class="verified-badge">
                     <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                 </div>
@@ -277,38 +261,35 @@
     </div>
 
     <script>
-        const cursor = document.getElementById('cursor');
         const audio = document.getElementById("bgMusic");
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX - 4 + 'px';
-            cursor.style.top = e.clientY - 4 + 'px';
-        });
 
         function initAudio() {
             audio.play().catch(e => {});
             document.removeEventListener('click', initAudio);
             document.removeEventListener('touchstart', initAudio);
         }
-
         document.addEventListener('click', initAudio);
         document.addEventListener('touchstart', initAudio);
 
-        document.addEventListener('mousedown', () => cursor.style.transform = 'scale(2.5)');
-        document.addEventListener('mouseup', () => cursor.style.transform = 'scale(1)');
-
         document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 'i' || e.key === 's' || e.key === 'j')) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 'i' || e.key === 's' || e.key === 'j' || e.key === 'p')) {
                 e.preventDefault();
             }
-            if (e.key === 'F12') {
-                e.preventDefault();
-            }
+            if (e.key === 'F12') e.preventDefault();
         });
 
         document.addEventListener('wheel', (e) => {
             if (e.ctrlKey) e.preventDefault();
         }, { passive: false });
+
+        setInterval(function() {
+            const startTime = performance.now();
+            debugger; 
+            const endTime = performance.now();
+            if (endTime - startTime > 100) {
+                document.body.innerHTML = "Scraping Detected.";
+            }
+        }, 1000);
     </script>
 </body>
 </html>
