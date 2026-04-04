@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SINWRLDD | OFFICIAL</title>
+    <title>SINWRLDD | UNTOUCHABLE</title>
     <style>
         :root {
-            --black-primary: #050505;
-            --black-secondary: #0f0f0f;
-            --accent-color: #ffffff;
-            --muted-gray: #666666;
-            --glass: rgba(255, 255, 255, 0.03);
+            --bg-black: #000000;
+            --card-black: #080808;
+            --accent: #ffffff;
+            --muted: #444444;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
         * {
@@ -21,9 +21,9 @@
         }
 
         body {
-            background-color: var(--black-primary);
-            color: var(--accent-color);
-            font-family: 'Inter', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-black);
+            color: var(--accent);
+            font-family: 'Courier New', Courier, monospace;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -31,186 +31,155 @@
             overflow: hidden;
         }
 
-        .background-overlay {
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .main-container {
+            width: 100%;
+            height: 100%;
+            max-width: 500px;
+            max-height: 800px;
+            background: var(--card-black);
+            border: 1px solid var(--muted);
+            position: relative;
+            animation: fadeIn 1.2s ease-out;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.05);
+        }
+
+        .cover-gif {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(120%);
+            border-bottom: 1px solid var(--muted);
+        }
+
+        .profile-content {
+            padding: 0 40px 40px 40px;
+            flex-grow: 1;
+            background: linear-gradient(to bottom, #080808, #000000);
+        }
+
+        .avatar-box {
+            width: 130px;
+            height: 130px;
+            margin-top: -65px;
+            margin-bottom: 25px;
+            position: relative;
+            border: 4px solid var(--card-black);
+            background: var(--card-black);
+        }
+
+        .avatar-gif {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(20%) brightness(80%);
+            border: 1px solid var(--muted);
+        }
+
+        .name-header {
+            margin-bottom: 30px;
+        }
+
+        .name {
+            font-size: 42px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+
+        .status {
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .bio-section {
+            border-left: 2px solid var(--accent);
+            padding-left: 20px;
+            margin-bottom: 40px;
+        }
+
+        .bio-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #888;
+            font-style: italic;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .link-btn {
+            text-decoration: none;
+            color: var(--accent);
+            font-size: 14px;
+            font-weight: bold;
+            padding: 15px;
+            border: 1px solid var(--muted);
+            text-align: center;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .link-btn:hover {
+            background: var(--accent);
+            color: var(--bg-black);
+            letter-spacing: 8px;
+        }
+
+        .overlay-effect {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, #111 0%, #000 100%);
-            z-index: -1;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -200% center; }
-            100% { background-position: 200% center; }
-        }
-
-        .main-container {
-            width: 90%;
-            max-width: 500px;
-            background: var(--black-secondary);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            overflow: hidden;
-            animation: slideUp 1s ease-out;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-        }
-
-        .header-banner {
-            height: 140px;
-            background: linear-gradient(to bottom, #222, #0f0f0f);
-            position: relative;
-        }
-
-        .profile-section {
-            padding: 0 30px 30px 30px;
-            position: relative;
-        }
-
-        .avatar-container {
-            margin-top: -60px;
-            margin-bottom: 20px;
-        }
-
-        .avatar {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            border: 5px solid var(--black-secondary);
-            background: #222;
-            filter: grayscale(100%);
-            transition: 0.5s;
-        }
-
-        .avatar:hover {
-            filter: grayscale(0%);
-            transform: scale(1.05);
-        }
-
-        .name-wrapper {
-            margin-bottom: 25px;
-        }
-
-        .display-name {
-            font-size: 32px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            background: linear-gradient(90deg, #fff, #444, #fff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 4s linear infinite;
-        }
-
-        .handle {
-            color: var(--muted-gray);
-            font-size: 14px;
-            display: block;
-            margin-top: -5px;
-        }
-
-        .bio-card {
-            background: var(--glass);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 20px;
-        }
-
-        .label {
-            font-size: 10px;
-            font-weight: 800;
-            color: var(--muted-gray);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-        }
-
-        .bio-text {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #ccc;
-        }
-
-        .links-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .link-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 13px;
-            text-decoration: none;
-            color: #fff;
-            transition: 0.3s;
-            border: 1px solid transparent;
-        }
-
-        .link-item:hover {
-            background: #fff;
-            color: #000;
-            font-weight: bold;
-        }
-
-        .footer-status {
-            margin-top: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 12px;
-            color: var(--muted-gray);
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #fff;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            z-index: 5;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="background-overlay"></div>
-
     <div class="main-container">
-        <div class="header-banner"></div>
+        <div class="overlay-effect"></div>
+        <img src="https://i.gifer.com/ITeI.gif" class="cover-gif" alt="cover">
         
-        <div class="profile-section">
-            <div class="avatar-container">
-                <img src="https://i.pravatar.cc/150?u=sin" alt="pfp" class="avatar">
+        <div class="profile-content">
+            <div class="avatar-box">
+                <img src="https://i.gifer.com/7oOz.gif" class="avatar-gif" alt="pfp">
             </div>
 
-            <div class="name-wrapper">
-                <h1 class="display-name">sinwrldd</h1>
-                <span class="handle">@sinwrldd_official</span>
+            <div class="name-header">
+                <h1 class="name">sinwrldd</h1>
+                <span class="status">Disconnected // Limited Edition</span>
             </div>
 
-            <div class="bio-card">
-                <p class="label">Manifesto</p>
-                <p class="bio-text">Moving in silence. Coding the chaos. Staying authentic in a world of copies.</p>
+            <div class="bio-section">
+                <p class="bio-text">"Respect is earned. Loyalty is returned. Betrayal is learned."</p>
             </div>
 
-            <div class="links-grid">
-                <a href="#" class="link-item">PROJECTS</a>
-                <a href="#" class="link-item">CONTACT</a>
-            </div>
-
-            <div class="footer-status">
-                <div class="dot"></div>
-                <span>ACTIVE NOW — UNTOUCHABLE</span>
+            <div class="links">
+                <a href="#" class="link-btn">Enter Void</a>
+                <a href="#" class="link-btn">Archives</a>
             </div>
         </div>
     </div>
