@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SINWRLDD // UNTOUCHABLE</title>
+    <title>SINWRLDD</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap');
 
         :root {
             --bg: #000000;
             --card: #0a0a0a;
             --accent: #ffffff;
             --border: rgba(255, 255, 255, 0.1);
-            --gray: #666666;
         }
 
         * {
@@ -28,8 +27,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Space Mono', monospace;
-            color: var(--accent);
             overflow: hidden;
         }
 
@@ -39,7 +36,7 @@
             border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 80px rgba(0,0,0,1);
+            box-shadow: 0 0 100px rgba(0,0,0,1);
         }
 
         .banner {
@@ -52,32 +49,30 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(100%) brightness(60%);
-            transition: 0.8s ease;
+            filter: grayscale(100%) brightness(50%);
+            transition: 1s ease;
         }
 
         .container:hover .banner img {
-            filter: grayscale(0%) brightness(80%);
-            transform: scale(1.05);
+            filter: grayscale(0%) brightness(70%);
+            transform: scale(1.1);
         }
 
         .profile-wrapper {
             position: relative;
-            padding: 0 25px;
-            margin-top: -55px;
+            padding: 0 30px;
+            margin-top: -60px;
             display: flex;
-            align-items: flex-end;
-            justify-content: flex-start;
             z-index: 5;
         }
 
         .avatar {
-            width: 110px;
-            height: 110px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            border: 5px solid var(--card);
+            border: 6px solid var(--card);
             overflow: hidden;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             background: #000;
         }
 
@@ -88,75 +83,30 @@
         }
 
         .info {
-            padding: 20px 25px 40px;
+            padding: 25px 30px 45px;
+            text-align: left;
         }
 
-        .header-text {
-            margin-bottom: 25px;
-        }
-
-        .header-text h1 {
+        h1 {
             font-family: 'Syncopate', sans-serif;
-            font-size: 32px;
+            font-size: 38px;
             text-transform: uppercase;
             letter-spacing: -2px;
-            line-height: 1;
-            background: linear-gradient(90deg, #fff, #444);
+            background: linear-gradient(90deg, #fff, #333);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-
-        .header-text span {
-            font-size: 10px;
-            color: var(--gray);
-            letter-spacing: 4px;
-            text-transform: uppercase;
-        }
-
-        .bio {
-            font-size: 13px;
-            line-height: 1.6;
-            color: #888;
-            border-left: 2px solid var(--accent);
-            padding-left: 15px;
-            margin-bottom: 35px;
-        }
-
-        .links {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .btn {
-            text-decoration: none;
-            color: var(--accent);
-            font-size: 11px;
-            font-weight: 700;
-            padding: 14px;
-            border: 1px solid var(--border);
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: var(--accent);
-            color: var(--bg);
-            box-shadow: 0 0 15px rgba(255,255,255,0.2);
         }
 
         #cursor {
             position: fixed;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background: #fff;
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             mix-blend-mode: difference;
-            transition: transform 0.1s ease;
         }
 
         @keyframes glitch {
@@ -183,35 +133,20 @@
 
         <div class="profile-wrapper">
             <div class="avatar">
-                <img src="https://i.gifer.com/7oOz.gif" alt="pfp">
+                <img src="https://i.gifer.com/8pav.gif" alt="pfp">
             </div>
         </div>
 
         <div class="info">
-            <div class="header-text">
-                <h1>sinwrldd</h1>
-                <span>Verified Entity // 2026</span>
-            </div>
-
-            <p class="bio">
-                Silent operations. High precision. <br>
-                Building empires in the dark.
-            </p>
-
-            <div class="links">
-                <a href="https://github.com/sinwrldd" target="_blank" class="btn">Terminal</a>
-                <a href="https://instagram.com/sinwrldd" target="_blank" class="btn">Visuals</a>
-                <a href="https://facebook.com/sinwrldd" target="_blank" class="btn">Network</a>
-                <a href="mailto:contact@sinwrldd.com" class="btn">Signal</a>
-            </div>
+            <h1>sinwrldd</h1>
         </div>
     </div>
 
     <script>
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX - 6 + 'px';
-            cursor.style.top = e.clientY - 6 + 'px';
+            cursor.style.left = e.clientX - 5 + 'px';
+            cursor.style.top = e.clientY - 5 + 'px';
         });
     </script>
 </body>
