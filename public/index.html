@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SINWRLDD // 67</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&display=swap');
 
         :root {
-            --bg: #030303;
-            --card: #0a0a0a;
+            --bg: #050505;
+            --card: #0d0d0d;
             --accent: #ffffff;
-            --border: rgba(255, 255, 255, 0.1);
-            --glitch-1: #ff0000;
-            --glitch-2: #00ffff;
+            --border: rgba(255, 255, 255, 0.08);
+            --glitch-1: #ff003c;
+            --glitch-2: #00f2ff;
         }
 
         * {
@@ -30,26 +30,27 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            background: radial-gradient(circle at center, #111 0%, #000 100%);
+            background: radial-gradient(circle at center, #151515 0%, #000 100%);
         }
 
         .container {
-            width: 420px;
+            width: 400px;
             background: var(--card);
             border: 1px solid var(--border);
             position: relative;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.9);
-            transition: 0.4s ease-in-out;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), border 0.3s ease;
+            overflow: hidden;
         }
 
         .container:hover {
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transform: translateY(-5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(-10px) scale(1.02);
         }
 
         .banner {
             width: 100%;
-            height: 180px;
+            height: 160px;
             overflow: hidden;
             position: relative;
         }
@@ -58,30 +59,38 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(100%) contrast(120%) brightness(50%);
-            transition: 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+            filter: grayscale(100%) brightness(40%);
+            transition: 1.5s ease;
         }
 
         .container:hover .banner img {
-            filter: grayscale(0%) contrast(110%) brightness(70%);
+            filter: grayscale(30%) brightness(60%);
             transform: scale(1.1);
         }
 
-        .profile-wrapper {
+        .profile-section {
             position: relative;
-            padding: 0 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin-top: -60px;
             z-index: 10;
         }
 
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            border: 5px solid var(--card);
+            border: 4px solid var(--card);
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             background: #000;
+            transition: 0.5s ease;
+        }
+
+        .container:hover .avatar {
+            border-color: rgba(255,255,255,0.1);
+            transform: rotate(5deg);
         }
 
         .avatar img {
@@ -91,16 +100,17 @@
         }
 
         .info {
-            padding: 25px 25px 40px;
+            padding: 20px 30px 40px;
+            text-align: center;
         }
 
         h1 {
             font-family: 'Syncopate', sans-serif;
-            font-size: 26px;
+            font-size: 28px;
             text-transform: uppercase;
             letter-spacing: -1px;
             color: var(--accent);
-            margin-bottom: 12px;
+            margin-top: 15px;
             position: relative;
             display: inline-block;
         }
@@ -108,31 +118,31 @@
         .asta-text {
             display: block;
             font-family: 'Space Mono', monospace;
-            font-size: 11px;
-            color: #888;
-            letter-spacing: 4px;
+            font-size: 10px;
+            color: #555;
+            letter-spacing: 5px;
             text-transform: uppercase;
+            margin-top: 20px;
+            padding-top: 20px;
             border-top: 1px solid var(--border);
-            padding-top: 15px;
-            margin-top: 15px;
-            transition: 0.3s;
+            transition: 0.4s ease;
         }
 
         .container:hover .asta-text {
-            color: #fff;
-            letter-spacing: 6px;
+            color: #aaa;
+            letter-spacing: 8px;
         }
 
         #cursor {
             position: fixed;
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background: #fff;
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             mix-blend-mode: difference;
-            box-shadow: 0 0 15px #fff;
+            transition: transform 0.1s ease;
         }
 
         @keyframes glitch {
@@ -143,7 +153,7 @@
         }
 
         .container:hover h1 {
-            animation: glitch 0.3s linear infinite;
+            animation: glitch 0.4s skew linear infinite;
         }
 
         .scanline {
@@ -151,16 +161,16 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.05);
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(255, 255, 255, 0.02) 50%
+            );
+            background-size: 100% 4px;
             z-index: 20;
             pointer-events: none;
-            animation: scan 4s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { top: 0%; }
-            100% { top: 100%; }
+            opacity: 0.3;
         }
     </style>
 </head>
@@ -174,24 +184,27 @@
             <img src="https://i.gifer.com/VhAL.gif" alt="cover">
         </div>
 
-        <div class="profile-wrapper">
+        <div class="profile-section">
             <div class="avatar">
                 <img src="https://i.gifer.com/8pav.gif" alt="pfp">
             </div>
-        </div>
-
-        <div class="info">
-            <h1>SINWRLDD</h1>
-            <div class="asta-text">ASTA LA VISTA (67)</div>
+            
+            <div class="info">
+                <h1>SINWRLDD</h1>
+                <div class="asta-text">ASTA LA VISTA (67)</div>
+            </div>
         </div>
     </div>
 
     <script>
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX - 4 + 'px';
-            cursor.style.top = e.clientY - 4 + 'px';
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
         });
+
+        document.addEventListener('mousedown', () => cursor.style.transform = 'scale(2)');
+        document.addEventListener('mouseup', () => cursor.style.transform = 'scale(1)');
     </script>
 </body>
 </html>
