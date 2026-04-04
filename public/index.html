@@ -3,190 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sinwrldd | Portfolio</title>
+    <title>SINWRLDD | OFFICIAL</title>
     <style>
         :root {
-            --bg-dark: #0a0a0a;
-            --card-bg: #111214;
-            --discord-blurple: #5865F2;
-            --text-main: #f2f3f5;
-            --text-muted: #b5bac1;
-            --online-green: #23a55a;
+            --black-primary: #050505;
+            --black-secondary: #0f0f0f;
+            --accent-color: #ffffff;
+            --muted-gray: #666666;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            cursor: crosshair;
         }
 
         body {
-            background-color: var(--bg-dark);
-            background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+            background-color: var(--black-primary);
+            color: var(--accent-color);
+            font-family: 'Inter', 'Helvetica Neue', sans-serif;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             overflow: hidden;
         }
 
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.95) translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+            z-index: -1;
         }
 
-        .profile-card {
-            width: 340px;
-            background-color: var(--card-bg);
-            border-radius: 12px;
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .main-container {
+            width: 90%;
+            max-width: 500px;
+            background: var(--black-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-            animation: fadeInScale 0.6s ease-out forwards;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideUp 1s ease-out;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
         }
 
-        .profile-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 60px rgba(88, 101, 242, 0.15);
-        }
-
-        .banner {
-            height: 105px;
-            background: linear-gradient(45deg, #5865F2, #313338);
-        }
-
-        .avatar-wrapper {
+        .header-banner {
+            height: 140px;
+            background: linear-gradient(to bottom, #222, #0f0f0f);
             position: relative;
-            margin-top: -45px;
-            margin-left: 16px;
-            width: 92px;
-            height: 92px;
+        }
+
+        .profile-section {
+            padding: 0 30px 30px 30px;
+            position: relative;
+        }
+
+        .avatar-container {
+            margin-top: -60px;
+            margin-bottom: 20px;
         }
 
         .avatar {
-            width: 80px;
-            height: 80px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            border: 6px solid var(--card-bg);
-            background-color: #313338;
-            transition: transform 0.3s ease;
+            border: 5px solid var(--black-secondary);
+            background: #222;
+            filter: grayscale(100%);
+            transition: 0.5s;
         }
 
         .avatar:hover {
-            transform: rotate(5deg) scale(1.05);
+            filter: grayscale(0%);
+            transform: scale(1.05);
         }
 
-        .status-dot {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-            width: 18px;
-            height: 18px;
-            background-color: var(--online-green);
-            border: 4px solid var(--card-bg);
-            border-radius: 50%;
-        }
-
-        .content {
-            padding: 16px;
-        }
-
-        .user-info {
-            margin-bottom: 12px;
+        .name-wrapper {
+            margin-bottom: 25px;
         }
 
         .display-name {
-            display: block;
-            color: var(--text-main);
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .username {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .divider {
-            height: 1px;
-            background-color: rgba(255, 255, 255, 0.08);
-            margin: 16px 0;
-        }
-
-        .section {
-            margin-bottom: 12px;
-        }
-
-        .section-title {
-            color: var(--text-main);
-            font-size: 11px;
-            font-weight: 800;
+            font-size: 32px;
+            font-weight: 900;
             text-transform: uppercase;
-            margin-bottom: 6px;
-            letter-spacing: 0.8px;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #fff, #444, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 4s linear infinite;
         }
 
-        .section-text {
-            color: var(--text-muted);
-            font-size: 13.5px;
-            line-height: 1.5;
+        .handle {
+            color: var(--muted-gray);
+            font-size: 14px;
+            display: block;
+            margin-top: -5px;
         }
 
-        .message-input input {
-            width: 100%;
-            background-color: #1e1f22;
+        .bio-card {
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .label {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--muted-gray);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .bio-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .link-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 13px;
+            text-decoration: none;
+            color: #fff;
+            transition: 0.3s;
             border: 1px solid transparent;
-            padding: 10px 12px;
-            border-radius: 4px;
-            color: var(--text-main);
-            margin-top: 8px;
-            outline: none;
-            transition: border 0.2s ease;
         }
 
-        .message-input input:focus {
-            border: 1px solid var(--discord-blurple);
+        .link-item:hover {
+            background: #fff;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .footer-status {
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--muted-gray);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff;
         }
     </style>
 </head>
 <body>
 
-    <div class="profile-card">
-        <div class="banner"></div>
-        <div class="avatar-wrapper">
-            <img src="https://i.pravatar.cc/150?u=sinwrldd" alt="Avatar" class="avatar">
-            <div class="status-dot"></div>
-        </div>
+    <div class="background-overlay"></div>
+
+    <div class="main-container">
+        <div class="header-banner"></div>
         
-        <div class="content">
-            <div class="user-info">
-                <span class="display-name">sinwrldd</span>
-                <span class="username">sinwrldd</span>
+        <div class="profile-section">
+            <div class="avatar-container">
+                <img src="https://i.pravatar.cc/150?u=sin" alt="pfp" class="avatar">
             </div>
 
-            <div class="divider"></div>
-
-            <div class="section">
-                <p class="section-title">About Me</p>
-                <p class="section-text">Full-stack developer focused on clean code and interactive experiences. Building the future one commit at a time.</p>
+            <div class="name-wrapper">
+                <h1 class="display-name">sinwrldd</h1>
+                <span class="handle">@sinwrldd_official</span>
             </div>
 
-            <div class="section">
-                <p class="section-title">Member Since</p>
-                <p class="section-text">Jan 1, 2026</p>
+            <div class="bio-card">
+                <p class="label">Manifesto</p>
+                <p class="bio-text">Moving in silence. Coding the chaos. Staying authentic in a world of copies.</p>
             </div>
 
-            <div class="message-input">
-                <input type="text" placeholder="Message @sinwrldd">
+            <div class="links-grid">
+                <a href="#" class="link-item">PROJECTS</a>
+                <a href="#" class="link-item">CONTACT</a>
+            </div>
+
+            <div class="footer-status">
+                <div class="dot"></div>
+                <span>ACTIVE NOW — UNTOUCHABLE</span>
             </div>
         </div>
     </div>
